@@ -13,9 +13,11 @@ import { Card } from '@/components/ui/Card';
 import { addProduct } from '@/app/actions/products';
 import { UNITS } from '@/lib/utils/constants';
 import { calculateSellingPrice } from '@/lib/utils/formatters';
+import { useToast } from '@/lib/hooks/useToast';
 
 export default function AddProductPage() {
   const router = useRouter();
+  const { success, error } = useToast();
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -55,11 +57,15 @@ export default function AddProductPage() {
       });
 
       if (result.success) {
+        success(`${formData.name} added successfully!`);
         // Navigate to the new product
         router.push(`/product/${result.data?.id}`);
+      } else {
+        error(result.error || 'Failed to add product');
       }
-    } catch (error) {
-      console.error('Failed to add product:', error);
+    } catch (err) {
+      console.error('Failed to add product:', err);
+      error('Failed to add product');
     } finally {
       setSaving(false);
     }

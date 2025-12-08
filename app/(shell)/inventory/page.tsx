@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { Package, AlertTriangle, XCircle, Copy, Check } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { InventoryListSkeleton } from '@/components/ui/Skeleton';
 import { getAllProducts } from '@/app/actions/products';
 import { formatCurrency } from '@/lib/utils/formatters';
 import { STOCK_STATUS } from '@/lib/utils/constants';
@@ -132,7 +133,7 @@ export default function InventoryPage() {
 
       {/* Product List */}
       {loading ? (
-        <div className="text-center py-12 text-slate-500">Loading...</div>
+        <InventoryListSkeleton />
       ) : filteredProducts.length === 0 ? (
         <div className="text-center py-12 text-slate-500">
           <p className="text-lg font-medium">No products found</p>

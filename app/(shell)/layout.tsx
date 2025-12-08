@@ -7,8 +7,12 @@
 import { ReactNode } from 'react';
 import { Header } from '@/components/layout/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
+import { ToastContainer } from '@/components/ui/Toast';
+import { useToast } from '@/lib/hooks/useToast';
 
 export default function ShellLayout({ children }: { children: ReactNode }) {
+  const { toasts, removeToast } = useToast();
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Header title="मेरी दुकान" />
@@ -18,6 +22,7 @@ export default function ShellLayout({ children }: { children: ReactNode }) {
       </main>
       
       <BottomNav />
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
 }

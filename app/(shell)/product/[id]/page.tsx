@@ -14,11 +14,13 @@ import { getProductById, updateProduct } from '@/app/actions/products';
 import { updateStockStatus } from '@/app/actions/stock';
 import { formatCurrency, formatSize, calculateMargin } from '@/lib/utils/formatters';
 import { STOCK_STATUS } from '@/lib/utils/constants';
+import { useToast } from '@/lib/hooks/useToast';
 import type { StockStatus } from '@prisma/client';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { success: showSuccess, error: showError } = useToast();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -53,10 +55,14 @@ export default function ProductDetailPage() {
       if (result.success) {
         // Reload product to get updated data
         await loadProduct();
-        // Show success feedback (you can add toast here)
+        const statusConfig = STOCK_STATUS.find(s => s.value === status);
+        showSuccess(`Stock updated to ${statusConfig?.hindiLabel} (${statusConfig?.label})`);
+      } else {
+        showError(result.error || 'Failed to update stock');
       }
-    } catch (error) {
-      console.error('Failed to update stock:', error);
+    } catch (err) {
+      console.error('Failed to update stock:', err);
+      showError('Failed to update stock status');
     } finally {
       setUpdating(false);
     }
