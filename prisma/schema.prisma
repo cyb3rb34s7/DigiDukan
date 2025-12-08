@@ -1,0 +1,75 @@
+// Kirana Digital Dukaan - Database Schema
+// Project: Price & Inventory Management System for Indian Grocery Stores
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// PRODUCT MODEL
+// Core entity representing items sold in the shop
+// ============================================
+model Product {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Product Identification
+  name          String   // e.g., "Tata Salt", "Maggi Noodles"
+  barcode       String?  @unique // Optional barcode for scanner integration
+  aliases       String[] // Search keywords: ["namak", "iodine", "salt"]
+
+  // Quantity & Unit Structure
+  // Example: sizeValue=1, sizeUnit="kg" OR sizeValue=500, sizeUnit="g"
+  sizeValue     Decimal  @db.Decimal(10, 2) // 1.0, 500.0, 250.0
+  sizeUnit      String   // "kg", "g", "pcs", "L", "mL"
+
+  // Pricing (in Rupees)
+  buyingPrice   Decimal  @db.Decimal(10, 2) // What shop owner paid
+  sellingPrice  Decimal  @db.Decimal(10, 2) // What customer pays
+
+  // Relationship
+  stock         Stock?   // One-to-One: Each product has one stock record
+
+  @@index([name]) // Fast search by name
+  @@index([barcode]) // Fast barcode lookup
+}
+
+// ============================================
+// STOCK MODEL
+// Traffic light inventory system (Green/Yellow/Red)
+// ============================================
+model Stock {
+  id          String      @id @default(uuid())
+  productId   String      @unique // One-to-One relationship
+  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  status      StockStatus @default(OK) // 🟢 Green, 🟡 Yellow, 🔴 Red
+  lastChecked DateTime    @default(now()) // When status was last updated
+
+  @@index([status]) // Fast filtering by stock level
+}
+
+// Stock Status Enum
+enum StockStatus {
+  OK      // 🟢 Green: Full Stock
+  LOW     // 🟡 Yellow: Buy Soon
+  EMPTY   // 🔴 Red: Urgent - Out of Stock
+}
+
+// ============================================
+// SETTINGS MODEL
+// App-wide configuration (single row)
+// ============================================
+model Settings {
+  id            Int     @id @default(1) // Single settings record
+  defaultMargin Decimal @default(10.0) @db.Decimal(5, 2) // Default profit margin %
+  language      String  @default("hi") // "hi" for Hindi, "en" for English
+
+  @@map("settings") // Table name lowercase
+}
