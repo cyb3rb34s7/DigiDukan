@@ -34,23 +34,29 @@ export const POPULAR_BRANDS = [
   "Lifebuoy",
 ] as const;
 
-export const STOCK_STATUS = {
-  OK: {
-    label: "भरा (Full)",
-    color: "emerald",
-    icon: "🟢",
+export const STOCK_STATUS = [
+  {
+    value: 'OK',
+    hindiLabel: 'भरा',
+    label: 'Full',
+    className: 'bg-emerald-100 text-emerald-700',
+    icon: '🟢',
   },
-  LOW: {
-    label: "कम (Low)",
-    color: "amber",
-    icon: "🟡",
+  {
+    value: 'LOW',
+    hindiLabel: 'कम',
+    label: 'Low',
+    className: 'bg-amber-100 text-amber-700',
+    icon: '🟡',
   },
-  EMPTY: {
-    label: "खत्म (Empty)",
-    color: "rose",
-    icon: "🔴",
+  {
+    value: 'EMPTY',
+    hindiLabel: 'खत्म',
+    label: 'Empty',
+    className: 'bg-red-100 text-red-700',
+    icon: '🔴',
   },
-} as const;
+] as const;
 
 export const LANGUAGES = [
   { value: "hi", label: "हिंदी" },
