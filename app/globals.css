@@ -1,50 +1,81 @@
 @import "tailwindcss";
+@import "../tokens/tokens.css";
 
-/* Kirana Digital Dukaan - Design System */
+/* ========================================
+ * Munafa OS v2.1 - Design System
+ * ======================================== */
 
 @theme inline {
-  /* Fonts */
-  --font-sans: var(--font-inter), var(--font-devanagari), system-ui, sans-serif;
-  --font-devanagari: var(--font-devanagari), var(--font-inter), sans-serif;
-  
+  /* ----------------------------------------
+   * FONTS
+   * ---------------------------------------- */
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
   /* Base Font Size - Larger for better readability */
   --font-size-base: 1.125rem; /* 18px */
-  
-  /* Custom Spacing (Touch Targets) */
+
+  /* ----------------------------------------
+   * COLORS (mapped from tokens)
+   * ---------------------------------------- */
+
+  /* Brand */
+  --color-brand: var(--color-brand-primary);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-light: var(--color-brand-light);
+
+  /* Backgrounds */
+  --color-canvas: var(--color-canvas);
+  --color-surface: var(--color-surface);
+
+  /* Text */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-disabled: var(--color-text-disabled);
+
+  /* Semantic */
+  --color-success: var(--color-success-text);
+  --color-success-bg: var(--color-success-bg);
+  --color-warning: var(--color-warning-text);
+  --color-warning-bg: var(--color-warning-bg);
+  --color-danger: var(--color-danger-text);
+  --color-danger-bg: var(--color-danger-bg);
+
+  /* ----------------------------------------
+   * SPACING
+   * ---------------------------------------- */
   --spacing-touch-min: 2.75rem; /* 44px - WCAG AAA */
   --spacing-touch-lg: 3.5rem; /* 56px */
   --spacing-nav-height: 4rem; /* 64px - bottom nav */
   --spacing-header-height: 3.5rem; /* 56px - top bar */
-  
-  /* Shadows with softer elevation */
+
+  /* ----------------------------------------
+   * SHADOWS
+   * ---------------------------------------- */
+  --shadow-card: var(--shadow-md);
+  --shadow-button: var(--shadow-xl);
+  --shadow-glass: var(--shadow-glass);
   --shadow-float: 0 12px 32px 0 rgb(0 0 0 / 0.15);
-  
-  /* Border Radius - Smooth corners */
-  --radius-md: 0.75rem; /* 12px */
-  --radius-lg: 1rem; /* 16px */
-  --radius-xl: 1.5rem; /* 24px */
+
+  /* ----------------------------------------
+   * BORDER RADIUS (Squircles)
+   * ---------------------------------------- */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 24px;
 }
 
-/* App-specific utility classes */
+/* ========================================
+ * UTILITY CLASSES
+ * ======================================== */
+
+/* Touch target sizing */
 .touch-target {
-  min-height: 2.75rem;
-  min-width: 2.75rem;
+  min-height: var(--touch-min-height);
+  min-width: var(--touch-min-height);
 }
 
-/* Smooth transitions for native feel */
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button, a {
-  transition: transform 0.1s ease-out, opacity 0.15s ease-out;
-}
-
-button:active, a:active {
-  transform: scale(0.95);
-}
-
-/* Price number formatting */
+/* Price number formatting (tabular figures) */
 .price-number {
   font-variant-numeric: tabular-nums;
 }
@@ -55,7 +86,43 @@ button:active, a:active {
   user-select: none;
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Brand gradient background */
+.bg-brand-gradient {
+  background: var(--color-brand-gradient);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ========================================
+ * GLOBAL STYLES
+ * ======================================== */
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth transitions for native feel */
+button, a {
+  transition: transform var(--duration-fast) var(--ease-smooth),
+              opacity var(--duration-fast) var(--ease-smooth);
+}
+
+/* Tactile feedback on press */
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+ * SCROLLBAR STYLING
+ * ======================================== */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -66,17 +133,81 @@ button:active, a:active {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(203 213 225);
+  background: var(--color-text-disabled);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(148 163 184);
+  background: var(--color-text-secondary);
 }
 
-/* Safe area insets for iOS */
+/* ========================================
+ * SAFE AREA (iOS)
+ * ======================================== */
+
 @supports (padding: env(safe-area-inset-bottom)) {
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* ========================================
+ * ANIMATIONS
+ * ======================================== */
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.animate-slide-down {
+  animation: slideDown var(--duration-normal) var(--ease-spring);
+}
+
+.animate-slide-up {
+  animation: slideUp var(--duration-normal) var(--ease-spring);
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-smooth);
+}
+
+.animate-shake {
+  animation: shake var(--duration-fast) var(--ease-smooth);
 }

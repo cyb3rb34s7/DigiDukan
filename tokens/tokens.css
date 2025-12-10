@@ -1,0 +1,160 @@
+/**
+ * Munafa OS v2.1 Design Tokens
+ * Source: docs/DESIGN_DECK.md
+ */
+
+:root {
+  /* ========================================
+   * BRAND PALETTE
+   * ======================================== */
+  --color-brand-primary: #4F46E5;       /* Electric Indigo */
+  --color-brand-dark: #3730A3;          /* Deep Violet */
+  --color-brand-light: #E0E7FF;         /* Soft Lavender */
+  --color-brand-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+
+  /* ========================================
+   * BACKGROUND LAYERS
+   * ======================================== */
+  --color-canvas: #F8F9FD;              /* Cloud White (App BG) */
+  --color-surface: #FFFFFF;             /* Pure White (Cards) */
+  --color-surface-glass: rgba(255, 255, 255, 0.95); /* Navigation Dock */
+
+  /* ========================================
+   * TYPOGRAPHY COLORS
+   * ======================================== */
+  --color-text-primary: #1E293B;        /* Ink Black */
+  --color-text-secondary: #64748B;      /* Slate Grey */
+  --color-text-disabled: #CBD5E1;       /* Light Grey */
+  --color-text-on-brand: #FFFFFF;       /* White text on Primary */
+
+  /* ========================================
+   * SEMANTIC COLORS (Traffic Lights)
+   * ======================================== */
+
+  /* Success (Safe/Full Stock) */
+  --color-success-bg: #ECFDF5;          /* Mint Jelly */
+  --color-success-text: #059669;        /* Emerald */
+  --color-success-bar: #10B981;         /* Graphic Elements */
+
+  /* Warning (Low Stock) */
+  --color-warning-bg: #FFFBEB;          /* Lemon Drop */
+  --color-warning-text: #B45309;        /* Amber */
+  --color-warning-bar: #F59E0B;
+
+  /* Danger (Empty/Loss) */
+  --color-danger-bg: #FFF1F2;           /* Rose Petal */
+  --color-danger-text: #E11D48;         /* Crimson */
+  --color-danger-bar: #F43F5E;
+
+  /* ========================================
+   * BORDERS & DIVIDERS
+   * ======================================== */
+  --color-border-subtle: #E2E8F0;
+  --color-border-focus: #6366F1;
+
+  /* ========================================
+   * TYPOGRAPHY
+   * ======================================== */
+  --font-family-base: 'Manrope', system-ui, sans-serif;
+
+  /* Scale */
+  --text-size-hero: 36px;               /* Total Value */
+  --text-size-h1: 28px;                 /* Page Titles */
+  --text-size-h2: 20px;                 /* Card Titles */
+  --text-size-body-lg: 18px;            /* Primary inputs/list items */
+  --text-size-body: 16px;               /* Standard text */
+  --text-size-caption: 12px;            /* Labels/Meta */
+
+  /* Weights */
+  --font-weight-regular: 500;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;             /* Prices only */
+
+  /* Line Heights */
+  --line-height-tight: 1.2;
+  --line-height-base: 1.5;
+
+  /* ========================================
+   * SPACING (4px grid)
+   * ======================================== */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Touch Targets */
+  --touch-min-height: 44px;
+  --touch-target-lg: 56px;
+
+  /* Layout */
+  --nav-height: 64px;
+  --header-height: 56px;
+
+  /* ========================================
+   * SHAPE (Squircles)
+   * ======================================== */
+  --radius-sm: 12px;                    /* Chips */
+  --radius-md: 16px;                    /* Buttons, Inputs */
+  --radius-lg: 24px;                    /* Cards, Modals */
+  --radius-full: 9999px;                /* Pills */
+
+  /* ========================================
+   * SHADOWS
+   * ======================================== */
+  --shadow-xs: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 25px 50px -12px rgba(99, 102, 241, 0.25);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+
+  /* ========================================
+   * MOTION
+   * ======================================== */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* ========================================
+ * DARK MODE
+ * Philosophy: "Dim the lights, don't invert everything"
+ * Source: DESIGN_DECK.md Section 8
+ * ======================================== */
+
+[data-theme="dark"] {
+  /* Background Layers */
+  --color-canvas: #0F172A;              /* Deep Blue-Black */
+  --color-surface: #1E293B;             /* Slate 800 */
+  --color-surface-glass: rgba(30, 41, 59, 0.95);
+
+  /* Typography Colors */
+  --color-text-primary: #FFFFFF;        /* White */
+  --color-text-secondary: #94A3B8;      /* Slate 400 */
+  --color-text-disabled: #475569;       /* Slate 600 */
+
+  /* Success */
+  --color-success-bg: #064E3B;          /* Dark Green */
+  --color-success-text: #34D399;        /* Bright Mint */
+
+  /* Warning */
+  --color-warning-bg: #78350F;          /* Dark Amber */
+  --color-warning-text: #FBBF24;        /* Bright Amber */
+
+  /* Danger */
+  --color-danger-bg: #881337;           /* Dark Red */
+  --color-danger-text: #FB7185;         /* Bright Rose */
+
+  /* Borders */
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-focus: #818CF8;        /* Lighter Indigo */
+
+  /* Shadows → Glows */
+  --shadow-xs: 0 0 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 0 20px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 0 30px rgba(99, 102, 241, 0.3);
+  --shadow-glass: 0 0 20px rgba(0, 0, 0, 0.3);
+}
