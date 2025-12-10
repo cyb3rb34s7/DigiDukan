@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: kirana-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kirana_user
+      POSTGRES_PASSWORD: kirana_password
+      POSTGRES_DB: kirana_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kirana_user -d kirana_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
