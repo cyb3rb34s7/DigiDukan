@@ -58,7 +58,13 @@ export class ProductService {
       throw new NotFoundError('Product')
     }
 
-    return product
+    // Convert Decimal fields to numbers for client serialization
+    return {
+      ...product,
+      sizeValue: product.sizeValue.toNumber(),
+      buyingPrice: product.buyingPrice.toNumber(),
+      sellingPrice: product.sellingPrice.toNumber(),
+    } as unknown as ProductWithStock
   }
 
   /**
@@ -74,7 +80,13 @@ export class ProductService {
       throw new NotFoundError('Product')
     }
 
-    return product
+    // Convert Decimal fields to numbers for client serialization
+    return {
+      ...product,
+      sizeValue: product.sizeValue.toNumber(),
+      buyingPrice: product.buyingPrice.toNumber(),
+      sellingPrice: product.sellingPrice.toNumber(),
+    } as unknown as ProductWithStock
   }
 
   /**
@@ -103,8 +115,16 @@ export class ProductService {
       prisma.product.count({ where })
     ])
 
+    // Convert Decimal fields to numbers for client serialization
+    const serializedProducts = products.map(p => ({
+      ...p,
+      sizeValue: p.sizeValue.toNumber(),
+      buyingPrice: p.buyingPrice.toNumber(),
+      sellingPrice: p.sellingPrice.toNumber(),
+    }))
+
     return {
-      data: products,
+      data: serializedProducts as unknown as ProductWithStock[],
       pagination: {
         page,
         limit,
