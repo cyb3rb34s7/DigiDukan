@@ -35,3 +35,14 @@ export { ThemeToggle, type ThemeToggleProps } from './ThemeToggle';
 // App Shell Components
 export { AppBar, type AppBarProps } from './AppBar';
 export { HeroSection, type HeroSectionProps, type HeroStats } from './HeroSection';
+
+// Inventory Components
+export {
+  InventorySummary,
+  type InventorySummaryProps,
+  type InventorySummaryCounts,
+  type StockFilter,
+} from './InventorySummary';
+export { InventoryItem, type InventoryItemProps } from './InventoryItem';
+export { FilterPills, type FilterPillsProps, type FilterOption } from './FilterPills';
+export { MandiModal, type MandiModalProps } from './MandiModal';

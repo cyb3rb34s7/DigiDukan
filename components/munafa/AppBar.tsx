@@ -40,8 +40,8 @@ export function AppBar({
         'h-14 px-4',
         // Background
         'bg-surface/95 backdrop-blur-xl',
-        // Border
-        'border-b border-border-subtle',
+        // Border - subtle brand accent
+        'border-b border-brand-primary/10',
         className
       )}
     >

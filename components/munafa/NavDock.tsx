@@ -47,8 +47,8 @@ export function NavDock({ items = defaultItems, className }: NavDockProps) {
         'fixed bottom-0 left-0 right-0 z-[100]',
         // Solid background with blur (more visible)
         'bg-surface backdrop-blur-xl',
-        // Top border for separation
-        'border-t border-border-subtle',
+        // Top border - subtle brand accent
+        'border-t border-brand-primary/10',
         // Shadow for elevation - stronger
         'shadow-[0_-4px_20px_rgba(0,0,0,0.1)]',
         // Height with safe area
