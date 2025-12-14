@@ -1,26 +1,79 @@
 /**
- * Product Detail Page - View and update product with stock status
+ * Product Detail Page - Munafa OS
+ * View and update product with stock status
  */
 
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Edit2 } from 'lucide-react';
 import Link from 'next/link';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { getProductById, updateProduct } from '@/app/actions/products';
+import { useTranslation } from '@/lib/contexts/LanguageContext';
+import { Card, Button, Icon, HealthBar, Badge } from '@/components/munafa';
+import { useToast } from '@/components/munafa/Toast';
+import { getProductById } from '@/app/actions/products';
 import { updateStockStatus } from '@/app/actions/stock';
 import { formatCurrency, formatSize, calculateMargin } from '@/lib/utils/formatters';
-import { STOCK_STATUS } from '@/lib/utils/constants';
-import { useToast } from '@/lib/hooks/useToast';
-import type { StockStatus } from '@prisma/client';
+import { cn } from '@/lib/utils/cn';
+import type { StockStatus } from '@/components/munafa/HealthBar';
+
+interface StatusButtonProps {
+  status: StockStatus;
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+  disabled?: boolean;
+}
+
+function StatusButton({ status, label, isActive, onClick, disabled }: StatusButtonProps) {
+  const colors = {
+    OK: {
+      bg: isActive ? 'bg-success-bar' : 'bg-success-bg',
+      text: isActive ? 'text-white' : 'text-success-text',
+      border: 'border-success-bar/30',
+      ring: 'ring-success-bar',
+    },
+    LOW: {
+      bg: isActive ? 'bg-warning-bar' : 'bg-warning-bg',
+      text: isActive ? 'text-white' : 'text-warning-text',
+      border: 'border-warning-bar/30',
+      ring: 'ring-warning-bar',
+    },
+    EMPTY: {
+      bg: isActive ? 'bg-danger-bar' : 'bg-danger-bg',
+      text: isActive ? 'text-white' : 'text-danger-text',
+      border: 'border-danger-bar/30',
+      ring: 'ring-danger-bar',
+    },
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        'flex-1 py-3 px-4 rounded-[var(--radius-md)]',
+        'font-semibold text-sm',
+        'border',
+        'transition-all duration-[var(--duration-fast)]',
+        'active:scale-95',
+        colors[status].bg,
+        colors[status].text,
+        colors[status].border,
+        disabled && 'opacity-50 cursor-not-allowed',
+        isActive && ['ring-2 ring-offset-2 ring-offset-surface', colors[status].ring]
+      )}
+    >
+      {label}
+    </button>
+  );
+}
 
 export default function ProductDetailPage() {
+  const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
-  const { success: showSuccess, error: showError } = useToast();
+  const { toast } = useToast();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -51,18 +104,20 @@ export default function ProductDetailPage() {
         productId: productId,
         status: status,
       });
-      
+
       if (result.success) {
-        // Reload product to get updated data
-        await loadProduct();
-        const statusConfig = STOCK_STATUS.find(s => s.value === status);
-        showSuccess(`Stock updated to ${statusConfig?.hindiLabel} (${statusConfig?.label})`);
+        // Optimistic update
+        setProduct((prev: any) => ({
+          ...prev,
+          stock: { ...prev.stock, status },
+        }));
+        toast.success(t('detail.success.stock'));
       } else {
-        showError(result.error || 'Failed to update stock');
+        toast.error(result.error || t('detail.error.stock'));
       }
     } catch (err) {
       console.error('Failed to update stock:', err);
-      showError('Failed to update stock status');
+      toast.error(t('detail.error.stock'));
     } finally {
       setUpdating(false);
     }
@@ -70,12 +125,15 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="p-4">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-slate-200 rounded w-3/4"></div>
-          <div className="h-32 bg-slate-200 rounded"></div>
-          <div className="h-24 bg-slate-200 rounded"></div>
+      <div className="p-4 space-y-4">
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between">
+          <div className="h-10 w-20 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
+          <div className="h-10 w-16 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
         </div>
+        {/* Card skeletons */}
+        <div className="h-48 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
+        <div className="h-32 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
       </div>
     );
   }
@@ -84,9 +142,12 @@ export default function ProductDetailPage() {
     return (
       <div className="p-4">
         <Card className="text-center py-12">
-          <p className="text-slate-600 mb-4">Product not found</p>
-          <Button onClick={() => router.push('/')} variant="secondary">
-            Go Back
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-input-bg flex items-center justify-center">
+            <Icon name="inventory-2" size="lg" className="text-text-disabled" />
+          </div>
+          <p className="text-text-secondary mb-4">{t('detail.notFound')}</p>
+          <Button variant="secondary" onClick={() => router.back()}>
+            {t('detail.button.back')}
           </Button>
         </Card>
       </div>
@@ -98,120 +159,151 @@ export default function ProductDetailPage() {
     Number(product.sellingPrice)
   );
   const marginAmount = Number(product.sellingPrice) - Number(product.buyingPrice);
-  const currentStatus = product.stock?.status || 'OK';
+  const currentStatus = (product.stock?.status || 'OK') as StockStatus;
+
+  // Margin color based on value
+  const marginColor =
+    margin >= 20
+      ? 'text-success-text bg-success-bg'
+      : margin >= 10
+      ? 'text-warning-text bg-warning-bg'
+      : 'text-danger-text bg-danger-bg';
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-4 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <Link href="/">
-          <Button variant="ghost" size="sm" icon={<ArrowLeft className="w-5 h-5" />}>
-            Back
-          </Button>
-        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => router.back()}
+          className="gap-1"
+        >
+          <Icon name="arrow-back" size="sm" />
+          {t('detail.button.back')}
+        </Button>
         <Link href={`/product/${productId}/edit`}>
-          <Button variant="secondary" size="sm" icon={<Edit2 className="w-4 h-4" />}>
-            Edit
+          <Button variant="secondary" size="sm" className="gap-1">
+            <Icon name="edit" size="sm" />
+            {t('detail.button.edit')}
           </Button>
         </Link>
       </div>
 
-      {/* Product Info */}
-      <Card>
-        <div className="space-y-4">
+      {/* Product Info Card */}
+      <Card className="overflow-hidden">
+        <div className="p-4 space-y-4">
+          {/* Name & Size */}
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">{product.name}</h1>
-            <p className="text-slate-600">
+            <h1 className="text-2xl font-bold text-text-primary">{product.name}</h1>
+            <p className="text-text-secondary">
               {formatSize(Number(product.sizeValue), product.sizeUnit)}
             </p>
             {product.barcode && (
-              <p className="text-sm text-slate-500 mt-1">Barcode: {product.barcode}</p>
+              <p className="text-sm text-text-disabled mt-1">
+                {t('detail.label.barcode')} {product.barcode}
+              </p>
             )}
           </div>
 
-          {/* Pricing */}
-          <div className="grid grid-cols-2 gap-4 py-4 border-y border-slate-200">
-            <div>
-              <p className="text-sm text-slate-600 mb-1">खरीद (Buy)</p>
-              <p className="text-xl font-semibold text-slate-900 price-number">
+          {/* Pricing Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            {/* Buy Price */}
+            <div className="p-3 bg-input-bg rounded-[var(--radius-md)]">
+              <p className="text-xs text-text-secondary mb-1">{t('detail.label.buyPrice')}</p>
+              <p className="text-xl font-semibold text-text-primary tabular-nums">
                 {formatCurrency(product.buyingPrice)}
               </p>
             </div>
-            <div>
-              <p className="text-sm text-slate-600 mb-1">बेच (Sell)</p>
-              <p className="text-3xl font-bold text-emerald-700 price-number">
+            {/* Sell Price */}
+            <div className="p-3 bg-brand-primary/10 rounded-[var(--radius-md)] border border-brand-primary/20">
+              <p className="text-xs text-text-secondary mb-1">{t('detail.label.sellPrice')}</p>
+              <p className="text-2xl font-bold text-brand-dark tabular-nums">
                 {formatCurrency(product.sellingPrice)}
               </p>
             </div>
           </div>
 
           {/* Margin */}
-          <div className="bg-slate-50 rounded-lg p-3">
-            <p className="text-sm text-slate-600">मुनाफा (Margin)</p>
-            <p className="text-lg font-semibold text-slate-900">
-              {formatCurrency(marginAmount)} ({margin.toFixed(1)}%)
-            </p>
+          <div className={cn('p-3 rounded-[var(--radius-md)]', marginColor)}>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">{t('detail.label.margin')}</span>
+              <span className="text-lg font-bold tabular-nums">
+                {formatCurrency(marginAmount)} ({margin.toFixed(0)}%)
+              </span>
+            </div>
           </div>
         </div>
       </Card>
 
-      {/* Stock Status */}
+      {/* Stock Status Card */}
       <Card>
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-slate-900">
-            स्टॉक स्थिति (Stock Status)
+        <div className="p-4 space-y-4">
+          <h2 className="text-lg font-semibold text-text-primary">
+            {t('detail.stock.title')}
           </h2>
-          <p className="text-sm text-slate-600">Tap to update status</p>
-          
-          <div className="grid grid-cols-3 gap-3">
-            {STOCK_STATUS.map((config) => {
-              const isActive = currentStatus === config.value;
-              
-              return (
-                <Button
-                  key={config.value}
-                  variant={isActive ? 'primary' : 'secondary'}
-                  size="lg"
-                  fullWidth
-                  onClick={() => handleStockStatusChange(config.value as StockStatus)}
-                  disabled={updating}
-                  className={`h-20 flex-col gap-2 ${
-                    !isActive && config.value === 'OK' && 'hover:bg-emerald-50 hover:border-emerald-200'
-                  } ${
-                    !isActive && config.value === 'LOW' && 'hover:bg-amber-50 hover:border-amber-200'
-                  } ${
-                    !isActive && config.value === 'EMPTY' && 'hover:bg-rose-50 hover:border-rose-200'
-                  }`}
-                >
-                  <span className="text-2xl">{config.icon}</span>
-                  <span className="text-sm font-medium">{config.hindiLabel}</span>
-                </Button>
-              );
-            })}
+
+          {/* HealthBar */}
+          <HealthBar status={currentStatus} className="h-3" />
+
+          {/* Status Buttons */}
+          <div className="flex gap-2">
+            <StatusButton
+              status="OK"
+              label={t('detail.stock.ok')}
+              isActive={currentStatus === 'OK'}
+              onClick={() => handleStockStatusChange('OK')}
+              disabled={updating}
+            />
+            <StatusButton
+              status="LOW"
+              label={t('detail.stock.low')}
+              isActive={currentStatus === 'LOW'}
+              onClick={() => handleStockStatusChange('LOW')}
+              disabled={updating}
+            />
+            <StatusButton
+              status="EMPTY"
+              label={t('detail.stock.empty')}
+              isActive={currentStatus === 'EMPTY'}
+              onClick={() => handleStockStatusChange('EMPTY')}
+              disabled={updating}
+            />
           </div>
         </div>
       </Card>
 
-      {/* Aliases */}
+      {/* Aliases/Search Keywords */}
       {product.aliases && product.aliases.length > 0 && (
         <Card>
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-slate-900">
-              खोज शब्द (Search Terms)
+          <div className="p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-text-primary">
+              {t('detail.label.aliases')}
             </h3>
             <div className="flex flex-wrap gap-2">
               {product.aliases.map((alias: string, index: number) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm"
-                >
+                <Badge key={index} variant="default">
                   {alias}
-                </span>
+                </Badge>
               ))}
             </div>
           </div>
         </Card>
       )}
+
+      {/* Delete Button */}
+      <Button
+        variant="ghost"
+        fullWidth
+        className="text-danger-text hover:bg-danger-bg"
+        onClick={() => {
+          // TODO: Implement delete with confirmation
+          console.log('Delete product:', productId);
+        }}
+      >
+        <Icon name="delete" size="sm" className="mr-2" />
+        {t('detail.button.delete')}
+      </Button>
     </div>
   );
 }
