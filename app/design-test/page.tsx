@@ -5,418 +5,385 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Icon, IconNames } from '@/components/munafa/Icon';
+import { Button } from '@/components/munafa/Button';
+import { Input } from '@/components/munafa/Input';
+import { Card } from '@/components/munafa/Card';
+import { Badge } from '@/components/munafa/Badge';
+import { Chip } from '@/components/munafa/Chip';
+import { HealthBar } from '@/components/munafa/HealthBar';
+import { MeshHeader } from '@/components/munafa/MeshHeader';
+import { NavDock } from '@/components/munafa/NavDock';
 import { useTheme } from '@/lib/contexts/ThemeContext';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { useToast } from '@/components/munafa/Toast';
 
 export default function DesignTestPage() {
-  const { theme, setTheme, isDark } = useTheme();
+  const { setTheme, isDark } = useTheme();
   const { language, setLanguage, t, languages, languageNames } = useLanguage();
+  const { toast } = useToast();
+  const [unit, setUnit] = useState('kg');
+  const [loading, setLoading] = useState(false);
+
+  const handleLoadingDemo = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
 
   return (
-    <div className="min-h-screen bg-canvas p-6 space-y-8">
-      {/* Header */}
-      <header className="space-y-2">
-        <h1 className="text-[28px] font-bold text-text-primary">
-          Munafa OS v2.1
-        </h1>
-        <p className="text-text-secondary">Design System Test Page</p>
-      </header>
+    <div className="min-h-screen bg-canvas pb-20">
+      {/* MeshHeader Demo */}
+      <MeshHeader title={t('header.title')} />
 
-      {/* Theme & Language Controls */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Theme & Language
-        </h2>
+      <div className="p-4 space-y-8 max-w-md mx-auto">
+        {/* Theme & Language Controls */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">
+            Theme & Language
+          </h2>
 
-        <div className="bg-surface p-4 rounded-lg space-y-4">
-          {/* Theme Toggle */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-text-secondary">
-              {t('settings.theme.title')}
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setTheme('light')}
-                className={`flex-1 h-12 rounded-xl font-medium transition-all ${
-                  !isDark
-                    ? 'bg-brand-gradient text-white'
-                    : 'bg-canvas text-text-secondary border border-border-subtle'
-                }`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <Icon name={IconNames.lightMode} size="sm" />
-                  {t('settings.theme.light')}
-                </span>
-              </button>
-              <button
-                onClick={() => setTheme('dark')}
-                className={`flex-1 h-12 rounded-xl font-medium transition-all ${
-                  isDark
-                    ? 'bg-brand-gradient text-white'
-                    : 'bg-canvas text-text-secondary border border-border-subtle'
-                }`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <Icon name={IconNames.darkMode} size="sm" />
-                  {t('settings.theme.dark')}
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Language Selector */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-text-secondary">
-              {t('settings.language.title')}
-            </p>
-            <div className="flex gap-2">
-              {languages.map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={`flex-1 h-12 rounded-xl font-medium transition-all ${
-                    language === lang
-                      ? 'bg-brand-gradient text-white'
-                      : 'bg-canvas text-text-secondary border border-border-subtle'
-                  }`}
+          <Card>
+            {/* Theme Toggle */}
+            <div className="space-y-2 mb-4">
+              <p className="text-sm font-bold text-text-secondary">
+                {t('settings.theme.title')}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant={!isDark ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setTheme('light')}
+                  icon={<Icon name={IconNames.lightMode} size="sm" />}
+                  className="flex-1"
                 >
-                  {languageNames[lang]}
-                </button>
-              ))}
+                  {t('settings.theme.light')}
+                </Button>
+                <Button
+                  variant={isDark ? 'primary' : 'secondary'}
+                  size="sm"
+                  onClick={() => setTheme('dark')}
+                  icon={<Icon name={IconNames.darkMode} size="sm" />}
+                  className="flex-1"
+                >
+                  {t('settings.theme.dark')}
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Translation Preview */}
-          <div className="space-y-2 pt-2 border-t border-border-subtle">
-            <p className="text-sm font-bold text-text-secondary">
-              Translation Preview
+            {/* Language Selector */}
+            <div className="space-y-2">
+              <p className="text-sm font-bold text-text-secondary">
+                {t('settings.language.title')}
+              </p>
+              <div className="flex gap-2">
+                {languages.map((lang) => (
+                  <Button
+                    key={lang}
+                    variant={language === lang ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => setLanguage(lang)}
+                    className="flex-1"
+                  >
+                    {languageNames[lang]}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Button Component */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Buttons</h2>
+
+          <Card>
+            <div className="space-y-3">
+              <Button variant="primary" size="lg" fullWidth>
+                {t('add.button.submit')}
+              </Button>
+
+              <Button
+                variant="secondary"
+                fullWidth
+                icon={<Icon name={IconNames.save} size="sm" />}
+              >
+                {t('edit.button.save')}
+              </Button>
+
+              <Button variant="ghost" fullWidth>
+                {t('common.cancel')}
+              </Button>
+
+              <Button variant="danger" fullWidth>
+                {t('common.delete')}
+              </Button>
+
+              <div className="flex gap-2 pt-2">
+                <Button
+                  variant="primary"
+                  loading={loading}
+                  onClick={handleLoadingDemo}
+                  className="flex-1"
+                >
+                  Loading Demo
+                </Button>
+                <Button variant="secondary" disabled className="flex-1">
+                  Disabled
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </section>
+
+        {/* Input Component */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Inputs</h2>
+
+          <Card>
+            <div className="space-y-4">
+              <Input
+                label={t('add.form.name')}
+                placeholder={t('add.form.name.placeholder')}
+              />
+
+              <Input
+                variant="search"
+                placeholder={t('home.search.placeholder')}
+                icon={<Icon name={IconNames.search} size="sm" />}
+              />
+
+              <Input
+                variant="price"
+                label={t('add.form.buyPrice')}
+                placeholder="0"
+                icon={<span className="text-text-primary">₹</span>}
+                inputMode="decimal"
+              />
+
+              <Input
+                label="With Error"
+                placeholder="Enter something..."
+                error="This field is required"
+              />
+            </div>
+          </Card>
+        </section>
+
+        {/* Chip Component */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Chips</h2>
+
+          <Card>
+            <p className="text-sm font-bold text-text-secondary mb-2">
+              {t('add.form.unit')}
             </p>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="bg-canvas p-2 rounded-lg">
-                <span className="text-text-secondary">nav.home:</span>
-                <span className="ml-2 text-text-primary font-medium">
-                  {t('nav.home')}
-                </span>
+            <Chip
+              options={[
+                { value: 'kg', label: t('unit.kg') },
+                { value: 'g', label: t('unit.g') },
+                { value: 'L', label: t('unit.L') },
+                { value: 'pcs', label: t('unit.pcs') },
+              ]}
+              value={unit}
+              onChange={setUnit}
+            />
+          </Card>
+        </section>
+
+        {/* Badge Component */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Badges</h2>
+
+          <Card>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="default">Default</Badge>
+              <Badge variant="success">{t('stock.ok.label')}</Badge>
+              <Badge variant="warning">{t('stock.low.label')}</Badge>
+              <Badge variant="danger">{t('stock.empty.label')}</Badge>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-3">
+              <Badge variant="success" size="sm">Small</Badge>
+              <Badge variant="warning" size="md">Medium</Badge>
+            </div>
+          </Card>
+        </section>
+
+        {/* HealthBar Component */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Health Bars</h2>
+
+          <Card>
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-secondary">OK (100%)</span>
+                  <Badge variant="success" size="sm">{t('stock.ok.label')}</Badge>
+                </div>
+                <HealthBar status="OK" />
               </div>
-              <div className="bg-canvas p-2 rounded-lg">
-                <span className="text-text-secondary">nav.inventory:</span>
-                <span className="ml-2 text-text-primary font-medium">
-                  {t('nav.inventory')}
-                </span>
+
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-secondary">LOW (40%)</span>
+                  <Badge variant="warning" size="sm">{t('stock.low.label')}</Badge>
+                </div>
+                <HealthBar status="LOW" />
               </div>
-              <div className="bg-canvas p-2 rounded-lg">
-                <span className="text-text-secondary">add.title:</span>
-                <span className="ml-2 text-text-primary font-medium">
-                  {t('add.title')}
-                </span>
-              </div>
-              <div className="bg-canvas p-2 rounded-lg">
-                <span className="text-text-secondary">settings.title:</span>
-                <span className="ml-2 text-text-primary font-medium">
-                  {t('settings.title')}
-                </span>
+
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-secondary">EMPTY (0%)</span>
+                  <Badge variant="danger" size="sm">{t('stock.empty.label')}</Badge>
+                </div>
+                <HealthBar status="EMPTY" />
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </Card>
+        </section>
 
-      {/* Color Tokens */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Color Tokens
-        </h2>
+        {/* Toast Demo */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Toasts</h2>
 
-        <div className="grid grid-cols-3 gap-3">
-          {/* Brand Colors */}
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg"
-              style={{ background: 'var(--color-brand-primary)' }}
-            />
-            <p className="text-xs text-text-secondary">Brand Primary</p>
-          </div>
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg"
-              style={{ background: 'var(--color-brand-dark)' }}
-            />
-            <p className="text-xs text-text-secondary">Brand Dark</p>
-          </div>
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg border"
-              style={{ background: 'var(--color-brand-light)' }}
-            />
-            <p className="text-xs text-text-secondary">Brand Light</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3">
-          {/* Semantic Colors */}
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg"
-              style={{ background: 'var(--color-success-bar)' }}
-            />
-            <p className="text-xs text-text-secondary">Success</p>
-          </div>
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg"
-              style={{ background: 'var(--color-warning-bar)' }}
-            />
-            <p className="text-xs text-text-secondary">Warning</p>
-          </div>
-          <div className="space-y-2">
-            <div
-              className="h-16 rounded-lg"
-              style={{ background: 'var(--color-danger-bar)' }}
-            />
-            <p className="text-xs text-text-secondary">Danger</p>
-          </div>
-        </div>
-
-        {/* Gradient */}
-        <div className="space-y-2">
-          <div className="h-16 rounded-lg bg-brand-gradient" />
-          <p className="text-xs text-text-secondary">Brand Gradient</p>
-        </div>
-      </section>
-
-      {/* Typography */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">Typography</h2>
-
-        <div className="space-y-3 bg-surface p-4 rounded-lg">
-          <p style={{ fontSize: 'var(--text-size-hero)', fontWeight: 800 }}>
-            ₹50,000 <span className="text-text-secondary text-sm">(Hero)</span>
-          </p>
-          <p style={{ fontSize: 'var(--text-size-h1)', fontWeight: 700 }}>
-            Page Title (H1)
-          </p>
-          <p style={{ fontSize: 'var(--text-size-h2)', fontWeight: 700 }}>
-            Card Title (H2)
-          </p>
-          <p style={{ fontSize: 'var(--text-size-body-lg)', fontWeight: 500 }}>
-            Body Large - Input Text
-          </p>
-          <p style={{ fontSize: 'var(--text-size-body)', fontWeight: 500 }}>
-            Body - Standard Text
-          </p>
-          <p
-            style={{ fontSize: 'var(--text-size-caption)', fontWeight: 500 }}
-            className="text-text-secondary"
-          >
-            Caption - Labels & Meta
-          </p>
-        </div>
-
-        <div className="bg-surface p-4 rounded-lg">
-          <p className="text-text-primary">
-            Font Family: <span className="font-bold">Manrope</span>
-          </p>
-          <p className="price-number text-[24px] font-bold mt-2">
-            ₹1,234.56 (Tabular Nums)
-          </p>
-        </div>
-      </section>
-
-      {/* Icons */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Material Symbols Icons
-        </h2>
-
-        {/* Navigation Icons */}
-        <div className="bg-surface p-4 rounded-lg space-y-3">
-          <p className="text-sm font-bold text-text-secondary">
-            Navigation (Filled = Active)
-          </p>
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col items-center gap-1">
-              <Icon name={IconNames.home} filled className="text-[#4F46E5]" />
-              <span className="text-xs">Home</span>
+          <Card>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => toast.success(t('add.success'))}
+              >
+                Success
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => toast.error(t('add.error'))}
+              >
+                Error
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => toast.warning(t('toast.warning.default'))}
+              >
+                Warning
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => toast.info(t('toast.info.default'))}
+              >
+                Info
+              </Button>
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <Icon name={IconNames.inventory} className="text-slate-400" />
-              <span className="text-xs text-slate-400">Inventory</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Icon name={IconNames.add} className="text-slate-400" />
-              <span className="text-xs text-slate-400">Add</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
-              <Icon name={IconNames.settings} className="text-slate-400" />
-              <span className="text-xs text-slate-400">Settings</span>
-            </div>
-          </div>
-        </div>
+          </Card>
+        </section>
 
-        {/* Action Icons */}
-        <div className="bg-surface p-4 rounded-lg space-y-3">
-          <p className="text-sm font-bold text-text-secondary">Action Icons</p>
-          <div className="flex items-center gap-4 flex-wrap">
-            <Icon name={IconNames.search} size="lg" />
-            <Icon name={IconNames.save} size="lg" />
-            <Icon name={IconNames.edit} size="lg" />
-            <Icon name={IconNames.delete} size="lg" />
-            <Icon name={IconNames.copy} size="lg" />
-            <Icon name={IconNames.arrowBack} size="lg" />
-          </div>
-        </div>
+        {/* Card Variants */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Cards</h2>
 
-        {/* Feedback Icons */}
-        <div className="bg-surface p-4 rounded-lg space-y-3">
-          <p className="text-sm font-bold text-text-secondary">Feedback Icons</p>
-          <div className="flex items-center gap-4">
-            <Icon
-              name={IconNames.checkCircle}
-              filled
-              size="lg"
-              className="text-[#10B981]"
-            />
-            <Icon
-              name={IconNames.warning}
-              filled
-              size="lg"
-              className="text-[#F59E0B]"
-            />
-            <Icon
-              name={IconNames.cancel}
-              filled
-              size="lg"
-              className="text-[#F43F5E]"
-            />
-            <Icon name={IconNames.info} size="lg" className="text-[#4F46E5]" />
-          </div>
-        </div>
+          <Card hoverable>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-success-bg rounded-xl flex items-center justify-center">
+                <Icon name={IconNames.shoppingBag} className="text-success-text" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-text-primary">Tata Salt 1kg</p>
+                <p className="text-sm text-text-secondary">₹25 → ₹30</p>
+              </div>
+              <Badge variant="success">{t('stock.ok.label')}</Badge>
+            </div>
+            <HealthBar status="OK" className="mt-3" />
+          </Card>
 
-        {/* Icon Sizes */}
-        <div className="bg-surface p-4 rounded-lg space-y-3">
-          <p className="text-sm font-bold text-text-secondary">Icon Sizes</p>
-          <div className="flex items-end gap-4">
-            <div className="flex flex-col items-center gap-1">
+          <Card hoverable>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-warning-bg rounded-xl flex items-center justify-center">
+                <Icon name={IconNames.shoppingBag} className="text-warning-text" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-text-primary">Fortune Oil 1L</p>
+                <p className="text-sm text-text-secondary">₹150 → ₹165</p>
+              </div>
+              <Badge variant="warning">{t('stock.low.label')}</Badge>
+            </div>
+            <HealthBar status="LOW" className="mt-3" />
+          </Card>
+
+          <Card hoverable>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-danger-bg rounded-xl flex items-center justify-center">
+                <Icon name={IconNames.shoppingBag} className="text-danger-text" />
+              </div>
+              <div className="flex-1">
+                <p className="font-bold text-text-primary">Aashirvaad Atta 5kg</p>
+                <p className="text-sm text-text-secondary">₹280 → ₹320</p>
+              </div>
+              <Badge variant="danger">{t('stock.empty.label')}</Badge>
+            </div>
+            <HealthBar status="EMPTY" className="mt-3" />
+          </Card>
+        </section>
+
+        {/* Icons */}
+        <section className="space-y-4">
+          <h2 className="text-[20px] font-bold text-text-primary">Icons</h2>
+
+          <Card>
+            <p className="text-sm font-bold text-text-secondary mb-3">
+              Navigation (Filled = Active)
+            </p>
+            <div className="flex items-center justify-around">
+              <div className="flex flex-col items-center gap-1">
+                <Icon name={IconNames.home} filled className="text-brand-primary" />
+                <span className="text-xs text-brand-primary font-bold">Home</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Icon name={IconNames.inventory} className="text-text-secondary" />
+                <span className="text-xs text-text-secondary">Stock</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Icon name={IconNames.add} className="text-text-secondary" />
+                <span className="text-xs text-text-secondary">Add</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <Icon name={IconNames.settings} className="text-text-secondary" />
+                <span className="text-xs text-text-secondary">Settings</span>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <p className="text-sm font-bold text-text-secondary mb-3">
+              Sizes: sm(20) / md(24) / lg(28) / xl(32)
+            </p>
+            <div className="flex items-end justify-around">
               <Icon name={IconNames.home} size="sm" />
-              <span className="text-xs">sm (20px)</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
               <Icon name={IconNames.home} size="md" />
-              <span className="text-xs">md (24px)</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
               <Icon name={IconNames.home} size="lg" />
-              <span className="text-xs">lg (28px)</span>
-            </div>
-            <div className="flex flex-col items-center gap-1">
               <Icon name={IconNames.home} size="xl" />
-              <span className="text-xs">xl (32px)</span>
             </div>
-          </div>
-        </div>
-      </section>
+          </Card>
+        </section>
 
-      {/* Spacing & Shapes */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Shapes & Shadows
-        </h2>
+        {/* Footer */}
+        <footer className="pt-8 pb-4 text-center text-text-secondary text-sm">
+          <p>Munafa OS v2.1 - Design System</p>
+          <p className="text-xs mt-1">Phase 2: Component Library Complete</p>
+        </footer>
+      </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div
-            className="h-24 bg-surface flex items-center justify-center"
-            style={{
-              borderRadius: 'var(--radius-sm)',
-              boxShadow: 'var(--shadow-xs)',
-            }}
-          >
-            <span className="text-xs text-text-secondary">sm / xs shadow</span>
-          </div>
-          <div
-            className="h-24 bg-surface flex items-center justify-center"
-            style={{
-              borderRadius: 'var(--radius-md)',
-              boxShadow: 'var(--shadow-md)',
-            }}
-          >
-            <span className="text-xs text-text-secondary">md / md shadow</span>
-          </div>
-          <div
-            className="h-24 bg-surface flex items-center justify-center"
-            style={{
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-xl)',
-            }}
-          >
-            <span className="text-xs text-text-secondary">lg / xl shadow</span>
-          </div>
-          <div
-            className="h-24 glass flex items-center justify-center border border-slate-200/50"
-            style={{
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-glass)',
-            }}
-          >
-            <span className="text-xs text-text-secondary">Glass effect</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Sample Button (Preview) */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Button Preview
-        </h2>
-
-        <div className="space-y-3">
-          <button
-            className="w-full h-14 bg-brand-gradient text-white font-bold rounded-2xl"
-            style={{ boxShadow: 'var(--shadow-xl)' }}
-          >
-            PAKKA KARO
-          </button>
-
-          <button
-            className="w-full h-12 bg-surface text-text-primary font-bold rounded-2xl border"
-            style={{
-              boxShadow: 'var(--shadow-md)',
-              color: 'var(--color-brand-primary)',
-            }}
-          >
-            Secondary Button
-          </button>
-
-          <button className="w-full h-12 bg-transparent font-medium rounded-2xl text-[#4F46E5]">
-            Ghost Button
-          </button>
-        </div>
-      </section>
-
-      {/* Touch Targets */}
-      <section className="space-y-4">
-        <h2 className="text-[20px] font-bold text-text-primary">
-          Touch Targets (44px min)
-        </h2>
-
-        <div className="flex items-center gap-4">
-          <button className="touch-target bg-surface rounded-lg flex items-center justify-center border">
-            <Icon name={IconNames.add} />
-          </button>
-          <button className="touch-target bg-surface rounded-lg flex items-center justify-center border">
-            <Icon name={IconNames.edit} />
-          </button>
-          <button className="touch-target bg-surface rounded-lg flex items-center justify-center border">
-            <Icon name={IconNames.delete} />
-          </button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="pt-8 pb-4 text-center text-text-secondary text-sm">
-        <p>Munafa OS v2.1 - Design System Test</p>
-        <p className="text-xs mt-1">Phase 1: Foundation Complete</p>
-      </footer>
+      {/* NavDock Demo */}
+      <NavDock
+        items={[
+          { href: '/design-test', icon: 'home', labelKey: 'nav.home' },
+          { href: '/inventory', icon: 'inventory-2', labelKey: 'nav.inventory' },
+          { href: '/add', icon: 'add-circle', labelKey: 'nav.add' },
+          { href: '/settings', icon: 'settings', labelKey: 'nav.settings' },
+        ]}
+      />
     </div>
   );
 }

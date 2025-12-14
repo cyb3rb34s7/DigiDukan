@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/lib/contexts/Providers";
@@ -19,21 +19,22 @@ const notoDevanagari = Noto_Sans_Devanagari({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#4F46E5",
+};
+
 export const metadata: Metadata = {
   title: "Munafa OS - Kirana Digital Dukaan",
   description: "Inventory & Price Tracker for Indian Grocery Stores",
   manifest: "/manifest.json",
-  themeColor: "#4F46E5", // Electric Indigo
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Munafa",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
   },
 };
 

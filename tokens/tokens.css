@@ -1,56 +1,60 @@
 /**
  * Munafa OS v2.1 Design Tokens
- * Source: docs/DESIGN_DECK.md
+ * Minimalist Chartreuse Theme
  */
 
 :root {
   /* ========================================
-   * BRAND PALETTE
+   * BRAND PALETTE - Chartreuse
    * ======================================== */
-  --color-brand-primary: #4F46E5;       /* Electric Indigo */
-  --color-brand-dark: #3730A3;          /* Deep Violet */
-  --color-brand-light: #E0E7FF;         /* Soft Lavender */
-  --color-brand-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --color-brand-primary: #90D31F;       /* Chartreuse */
+  --color-brand-dark: #6BA313;          /* Darker Lime */
+  --color-brand-light: #E8F5D6;         /* Pale Lime */
+  --color-brand-gradient: linear-gradient(135deg, #90D31F 0%, #7CB518 100%);
+  --color-brand-glow: rgba(144, 211, 31, 0.3);
 
   /* ========================================
    * BACKGROUND LAYERS
    * ======================================== */
-  --color-canvas: #F8F9FD;              /* Cloud White (App BG) */
+  --color-canvas: #FAFAFA;              /* Off-white (App BG) */
   --color-surface: #FFFFFF;             /* Pure White (Cards) */
+  --color-surface-elevated: #FFFFFF;    /* Elevated surfaces */
   --color-surface-glass: rgba(255, 255, 255, 0.95); /* Navigation Dock */
+  --color-input-bg: #F4F4F5;            /* Zinc 100 - Input fields */
+  --color-input-bg-hover: #E4E4E7;      /* Zinc 200 - Input hover */
 
   /* ========================================
    * TYPOGRAPHY COLORS
    * ======================================== */
-  --color-text-primary: #1E293B;        /* Ink Black */
-  --color-text-secondary: #64748B;      /* Slate Grey */
-  --color-text-disabled: #CBD5E1;       /* Light Grey */
-  --color-text-on-brand: #FFFFFF;       /* White text on Primary */
+  --color-text-primary: #0D0D0D;        /* Near Black */
+  --color-text-secondary: #666666;      /* Medium Gray */
+  --color-text-disabled: #A3A3A3;       /* Light Gray */
+  --color-text-on-brand: #0D0D0D;       /* Dark text on Chartreuse */
 
   /* ========================================
    * SEMANTIC COLORS (Traffic Lights)
    * ======================================== */
 
   /* Success (Safe/Full Stock) */
-  --color-success-bg: #ECFDF5;          /* Mint Jelly */
+  --color-success-bg: #ECFDF5;          /* Mint */
   --color-success-text: #059669;        /* Emerald */
   --color-success-bar: #10B981;         /* Graphic Elements */
 
   /* Warning (Low Stock) */
-  --color-warning-bg: #FFFBEB;          /* Lemon Drop */
+  --color-warning-bg: #FFFBEB;          /* Lemon */
   --color-warning-text: #B45309;        /* Amber */
   --color-warning-bar: #F59E0B;
 
   /* Danger (Empty/Loss) */
-  --color-danger-bg: #FFF1F2;           /* Rose Petal */
-  --color-danger-text: #E11D48;         /* Crimson */
-  --color-danger-bar: #F43F5E;
+  --color-danger-bg: #FEF2F2;           /* Rose */
+  --color-danger-text: #DC2626;         /* Red */
+  --color-danger-bar: #EF4444;
 
   /* ========================================
    * BORDERS & DIVIDERS
    * ======================================== */
-  --color-border-subtle: #E2E8F0;
-  --color-border-focus: #6366F1;
+  --color-border-subtle: #E4E4E7;       /* Zinc 200 */
+  --color-border-focus: #90D31F;        /* Chartreuse focus */
 
   /* ========================================
    * TYPOGRAPHY
@@ -120,21 +124,26 @@
 }
 
 /* ========================================
- * DARK MODE
- * Philosophy: "Dim the lights, don't invert everything"
- * Source: DESIGN_DECK.md Section 8
+ * DARK MODE - Minimalist Dark
+ * Philosophy: Near-black with chartreuse accents
  * ======================================== */
 
 [data-theme="dark"] {
-  /* Background Layers */
-  --color-canvas: #0F172A;              /* Deep Blue-Black */
-  --color-surface: #1E293B;             /* Slate 800 */
-  --color-surface-glass: rgba(30, 41, 59, 0.95);
+  /* Background Layers - True Dark */
+  --color-canvas: #0D0D0D;              /* Near Black */
+  --color-surface: #1C1C1C;             /* Dark Gray */
+  --color-surface-elevated: #262626;    /* Elevated surfaces */
+  --color-surface-glass: rgba(28, 28, 28, 0.95);
+  --color-input-bg: #262626;            /* Input fields */
+  --color-input-bg-hover: #333333;      /* Input hover */
+
+  /* Brand stays vibrant */
+  --color-brand-light: #1A2E0A;         /* Dark lime tint */
 
   /* Typography Colors */
   --color-text-primary: #FFFFFF;        /* White */
-  --color-text-secondary: #94A3B8;      /* Slate 400 */
-  --color-text-disabled: #475569;       /* Slate 600 */
+  --color-text-secondary: #888888;      /* Medium Gray */
+  --color-text-disabled: #555555;       /* Dark Gray */
 
   /* Success */
   --color-success-bg: #064E3B;          /* Dark Green */
@@ -145,16 +154,16 @@
   --color-warning-text: #FBBF24;        /* Bright Amber */
 
   /* Danger */
-  --color-danger-bg: #881337;           /* Dark Red */
-  --color-danger-text: #FB7185;         /* Bright Rose */
+  --color-danger-bg: #7F1D1D;           /* Dark Red */
+  --color-danger-text: #FCA5A5;         /* Bright Rose */
 
   /* Borders */
-  --color-border-subtle: rgba(255, 255, 255, 0.1);
-  --color-border-focus: #818CF8;        /* Lighter Indigo */
+  --color-border-subtle: #333333;       /* Dark border */
+  --color-border-focus: #90D31F;        /* Chartreuse focus */
 
-  /* Shadows → Glows */
-  --shadow-xs: 0 0 10px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 0 20px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 0 30px rgba(99, 102, 241, 0.3);
-  --shadow-glass: 0 0 20px rgba(0, 0, 0, 0.3);
+  /* Shadows → Subtle glows */
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 8px 32px rgba(144, 211, 31, 0.15);
+  --shadow-glass: 0 4px 24px rgba(0, 0, 0, 0.4);
 }

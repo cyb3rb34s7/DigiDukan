@@ -20,12 +20,20 @@
 
   /* Brand */
   --color-brand: var(--color-brand-primary);
+  --color-brand-primary: var(--color-brand-primary);
   --color-brand-dark: var(--color-brand-dark);
   --color-brand-light: var(--color-brand-light);
+  --color-brand-glow: var(--color-brand-glow);
+
+  /* Text on brand */
+  --color-text-on-brand: var(--color-text-on-brand);
 
   /* Backgrounds */
   --color-canvas: var(--color-canvas);
   --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-input-bg: var(--color-input-bg);
+  --color-input-bg-hover: var(--color-input-bg-hover);
 
   /* Text */
   --color-text-primary: var(--color-text-primary);
@@ -35,10 +43,20 @@
   /* Semantic */
   --color-success: var(--color-success-text);
   --color-success-bg: var(--color-success-bg);
+  --color-success-text: var(--color-success-text);
+  --color-success-bar: var(--color-success-bar);
   --color-warning: var(--color-warning-text);
   --color-warning-bg: var(--color-warning-bg);
+  --color-warning-text: var(--color-warning-text);
+  --color-warning-bar: var(--color-warning-bar);
   --color-danger: var(--color-danger-text);
   --color-danger-bg: var(--color-danger-bg);
+  --color-danger-text: var(--color-danger-text);
+  --color-danger-bar: var(--color-danger-bar);
+
+  /* Borders */
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-focus: var(--color-border-focus);
 
   /* ----------------------------------------
    * SPACING
@@ -152,6 +170,10 @@ a:active {
 
   .safe-top {
     padding-top: env(safe-area-inset-top);
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
