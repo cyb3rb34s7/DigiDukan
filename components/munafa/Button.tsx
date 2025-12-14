@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isDisabled}
         className={cn(
           // Base styles
-          'inline-flex items-center justify-center font-medium',
+          'inline-flex items-center justify-center font-medium flex-nowrap',
           'transition-all duration-[var(--duration-fast)] ease-[var(--ease-spring)]',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
           // Size
@@ -103,7 +103,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : null}
 
         {/* Label */}
-        <span className={loading ? 'opacity-0' : undefined}>{children}</span>
+        <span className={cn('whitespace-nowrap', loading && 'opacity-0')}>{children}</span>
 
         {/* Right icon */}
         {iconRight && !loading && (

@@ -18,7 +18,7 @@ export interface NavItem {
 }
 
 export interface NavDockProps {
-  items: NavItem[];
+  items?: NavItem[];
   className?: string;
 }
 
@@ -44,13 +44,16 @@ export function NavDock({ items = defaultItems, className }: NavDockProps) {
     <nav
       className={cn(
         // Fixed bottom position
-        'fixed bottom-0 left-0 right-0 z-50',
-        // Glass morphism
-        'bg-surface-glass backdrop-blur-md',
-        'shadow-[var(--shadow-glass)]',
-        'border-t border-border-subtle/50',
-        // Height and safe area
-        'h-[var(--nav-height)] pb-safe',
+        'fixed bottom-0 left-0 right-0 z-[100]',
+        // Solid background with blur (more visible)
+        'bg-surface backdrop-blur-xl',
+        // Top border for separation
+        'border-t border-border-subtle',
+        // Shadow for elevation - stronger
+        'shadow-[0_-4px_20px_rgba(0,0,0,0.1)]',
+        // Height with safe area
+        'h-[calc(var(--nav-height)+env(safe-area-inset-bottom,0px))]',
+        'pb-[env(safe-area-inset-bottom,0px)]',
         className
       )}
     >

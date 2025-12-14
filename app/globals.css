@@ -69,18 +69,21 @@
   /* ----------------------------------------
    * SHADOWS
    * ---------------------------------------- */
-  --shadow-card: var(--shadow-md);
-  --shadow-button: var(--shadow-xl);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-card: var(--shadow-sm);
   --shadow-glass: var(--shadow-glass);
-  --shadow-float: 0 12px 32px 0 rgb(0 0 0 / 0.15);
 
   /* ----------------------------------------
-   * BORDER RADIUS (Squircles)
+   * BORDER RADIUS (iOS-like)
    * ---------------------------------------- */
-  --radius-sm: 12px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 24px;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-lg);
 }
 
 /* ========================================
@@ -114,6 +117,37 @@
   background: var(--color-surface-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Hero gradient - Mesh effect with chartreuse glow */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(144, 211, 31, 0.12), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(144, 211, 31, 0.08), transparent),
+    radial-gradient(ellipse 50% 50% at 50% 90%, rgba(107, 163, 19, 0.06), transparent),
+    linear-gradient(180deg, var(--color-surface) 0%, var(--color-canvas) 100%);
+}
+
+/* Dark mode - More vibrant glow */
+[data-theme="dark"] .hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(144, 211, 31, 0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(144, 211, 31, 0.12), transparent),
+    radial-gradient(ellipse 50% 50% at 50% 90%, rgba(107, 163, 19, 0.08), transparent),
+    linear-gradient(180deg, #1C1C1C 0%, #0D0D0D 100%);
+}
+
+/* Glass card effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ========================================

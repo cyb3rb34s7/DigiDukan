@@ -1,19 +1,20 @@
 /**
- * Home Page - Search and Price Check with Fuse.js
+ * Home Page - Premium Dashboard
+ * Munafa OS v2.1 - Delightful Design
  */
 
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Search, Clock } from 'lucide-react';
 import Fuse from 'fuse.js';
-import { Input } from '@/components/ui/Input';
-import { Card } from '@/components/ui/Card';
-import { ProductCardSkeleton } from '@/components/ui/Skeleton';
+import { useRouter } from 'next/navigation';
+import { Icon } from '@/components/munafa/Icon';
+import { Input } from '@/components/munafa/Input';
+import { HeroSection } from '@/components/munafa/HeroSection';
+import ListGroup, { ListItem } from '@/components/munafa/ListGroup';
 import { searchProducts } from '../actions/products';
 import { formatCurrency, formatSize } from '@/lib/utils/formatters';
 import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
-import Link from 'next/link';
 
 type Product = {
   id: string;
@@ -27,6 +28,7 @@ type Product = {
 };
 
 export default function HomePage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -50,7 +52,7 @@ export default function HomePage() {
             stock: p.stock || undefined,
           }));
           setProducts(mapped);
-          setFilteredProducts(mapped.slice(0, 10));
+          setFilteredProducts(mapped.slice(0, 15));
         }
       } catch (error) {
         console.error('Failed to load products:', error);
@@ -64,7 +66,7 @@ export default function HomePage() {
   // Initialize Fuse.js
   const fuse = useMemo(() => {
     if (products.length === 0) return null;
-    
+
     return new Fuse(products, {
       keys: [
         { name: 'name', weight: 2 },
@@ -76,17 +78,17 @@ export default function HomePage() {
     });
   }, [products]);
 
-  // Fuse.js search with debouncing effect
+  // Fuse.js search
   useEffect(() => {
     if (!searchQuery.trim()) {
-      setFilteredProducts(products.slice(0, 10));
+      setFilteredProducts(products.slice(0, 15));
       return;
     }
 
     if (!fuse) return;
 
     const results = fuse.search(searchQuery);
-    setFilteredProducts(results.map(r => r.item).slice(0, 10));
+    setFilteredProducts(results.map(r => r.item).slice(0, 15));
   }, [searchQuery, products, fuse]);
 
   // Add to recently checked
@@ -102,98 +104,107 @@ export default function HomePage() {
       .filter(Boolean) as Product[];
   }, [recentlyChecked, products]);
 
-  return (
-    <div className="p-4 space-y-4">
-      {/* Search Bar */}
-      <Input
-        type="search"
-        placeholder="खोजें... (Search product)"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        icon={<Search className="w-5 h-5" />}
-        autoFocus
-      />
+  // Calculate stats
+  const stats = useMemo(() => {
+    const total = products.length;
+    const lowStock = products.filter(p => p.stock?.status === 'LOW').length;
+    const empty = products.filter(p => p.stock?.status === 'EMPTY').length;
+    return { total, lowStock, empty };
+  }, [products]);
 
-      {/* Recently Checked */}
-      {!searchQuery && recentProducts.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-slate-500" />
-            <h2 className="text-sm font-semibold text-slate-600">
-              हाल ही में देखे गए (Recently Checked)
-            </h2>
-          </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
-            {recentProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-                onClick={() => handleProductClick(product.id)}
-              >
-                <Card className="min-w-[140px] hover:shadow-md transition-shadow">
-                  <div className="text-sm font-medium text-slate-900 truncate">
-                    {product.name}
-                  </div>
-                  <div className="text-xs text-slate-500">
-                    {formatSize(product.sizeValue, product.sizeUnit)}
-                  </div>
-                  <div className="text-base font-bold text-emerald-700 mt-1">
-                    {formatCurrency(product.sellingPrice)}
-                  </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
+  // Handle add product
+  const handleAddProduct = () => {
+    router.push('/add');
+  };
+
+  return (
+    <div className="space-y-5">
+      {/* Hero Section with Stats */}
+      {!searchQuery && !loading && (
+        <HeroSection
+          stats={stats}
+          onAddProduct={handleAddProduct}
+        />
       )}
 
-      {/* Results */}
+      {/* Search Bar */}
+      <div className="px-4">
+        <Input
+          variant="search"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          icon={<Icon name="search" size="md" className="text-brand-primary" />}
+          iconRight={searchQuery ? (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="p-1 rounded-full hover:bg-input-bg-hover transition-colors"
+              aria-label="Clear search"
+            >
+              <Icon name="close" size="sm" className="text-text-secondary" />
+            </button>
+          ) : undefined}
+        />
+      </div>
+
+      {/* Loading State */}
       {loading ? (
-        <div className="space-y-3">
+        <div className="px-4 space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
-            <ProductCardSkeleton key={i} />
+            <div
+              key={i}
+              className="h-[60px] bg-surface animate-pulse rounded-[var(--radius-md)]"
+            />
           ))}
         </div>
       ) : (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-slate-600 uppercase">
-            {searchQuery ? 'खोज परिणाम (Search Results)' : 'सभी उत्पाद (All Products)'}
-          </h2>
-          
-          {filteredProducts.length === 0 ? (
-            <Card className="text-center py-8 text-slate-500">
-              कोई उत्पाद नहीं मिला (No products found)
-            </Card>
-          ) : (
-            filteredProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-                onClick={() => handleProductClick(product.id)}
-              >
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-slate-900">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-slate-500">
-                        {formatSize(product.sizeValue, product.sizeUnit)}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-slate-600">
-                        खरीद: {formatCurrency(product.buyingPrice)}
-                      </div>
-                      <div className="text-xl font-bold text-emerald-700 price-number">
-                        {formatCurrency(product.sellingPrice)}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            ))
+        <div className="px-4 space-y-5 pb-4">
+          {/* Recently Checked */}
+          {!searchQuery && recentProducts.length > 0 && (
+            <ListGroup title="Recently Checked">
+              {recentProducts.slice(0, 5).map((product, index) => (
+                <ListItem
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  title={product.name}
+                  subtitle={formatSize(product.sizeValue, product.sizeUnit)}
+                  trailing={
+                    <span className="text-[17px] font-bold text-brand-primary tabular-nums">
+                      {formatCurrency(product.sellingPrice)}
+                    </span>
+                  }
+                  onClick={() => handleProductClick(product.id)}
+                  isLast={index === Math.min(recentProducts.length, 5) - 1}
+                />
+              ))}
+            </ListGroup>
           )}
+
+          {/* Product List */}
+          <ListGroup title={searchQuery ? 'Search Results' : 'All Products'}>
+            {filteredProducts.length === 0 ? (
+              <div className="py-8 text-center text-text-secondary">
+                <Icon name="search-off" size="lg" className="mx-auto mb-2 opacity-50" />
+                <p>No products found</p>
+              </div>
+            ) : (
+              filteredProducts.map((product, index) => (
+                <ListItem
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  title={product.name}
+                  subtitle={`${formatSize(product.sizeValue, product.sizeUnit)} • Buy: ${formatCurrency(product.buyingPrice)}`}
+                  trailing={
+                    <span className="text-[17px] font-bold text-brand-primary tabular-nums">
+                      {formatCurrency(product.sellingPrice)}
+                    </span>
+                  }
+                  onClick={() => handleProductClick(product.id)}
+                  isLast={index === filteredProducts.length - 1}
+                />
+              ))
+            )}
+          </ListGroup>
         </div>
       )}
     </div>

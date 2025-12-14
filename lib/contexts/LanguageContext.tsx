@@ -119,17 +119,7 @@ export function LanguageProvider({
     languageNames,
   };
 
-  // Don't render until mounted to prevent hydration mismatch, but still wrap in provider for SSR
-  if (!mounted) {
-    return (
-      <LanguageContext.Provider value={value}>
-        <div style={{ visibility: 'hidden' }}>
-          {children}
-        </div>
-      </LanguageContext.Provider>
-    );
-  }
-
+  // Always render children - language will be applied once mounted
   return (
     <LanguageContext.Provider value={value}>
       {children}

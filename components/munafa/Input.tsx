@@ -33,8 +33,9 @@ const variantStyles = {
     'tabular-nums',
   ].join(' '),
   search: [
-    'h-12 px-4 text-[16px]',
-    'rounded-full',
+    'h-14 px-5 text-[17px]',
+    'rounded-[var(--radius-lg)]',
+    'shadow-[0_2px_8px_rgba(144,211,31,0.08)]',
   ].join(' '),
 };
 
@@ -87,7 +88,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full bg-input-bg text-text-primary placeholder:text-text-disabled',
               'border border-border-subtle',
               'transition-all duration-[var(--duration-fast)] ease-[var(--ease-smooth)]',
-              'focus:outline-none focus:bg-surface-elevated focus:border-brand-primary focus:shadow-[var(--shadow-md)]',
+              'focus:outline-none focus:bg-surface-elevated focus:border-brand-primary',
+              // Focus shadow - stronger glow for search
+              variant === 'search'
+                ? 'focus:shadow-[0_4px_16px_rgba(144,211,31,0.2)]'
+                : 'focus:shadow-[var(--shadow-md)]',
               // Variant styles
               variantStyles[variant],
               // Icon padding

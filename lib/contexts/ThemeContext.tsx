@@ -89,17 +89,7 @@ export function ThemeProvider({
     isDark: theme === 'dark',
   };
 
-  // Prevent flash of wrong theme, but still wrap in provider for SSR
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={value}>
-        <div style={{ visibility: 'hidden' }}>
-          {children}
-        </div>
-      </ThemeContext.Provider>
-    );
-  }
-
+  // Always render children - the theme will be applied once mounted
   return (
     <ThemeContext.Provider value={value}>
       {children}

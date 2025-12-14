@@ -43,14 +43,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(
           // Base styles
-          'bg-surface rounded-[24px]',
-          'shadow-[var(--shadow-md)]',
+          'bg-surface rounded-[var(--radius-lg)]',
+          'shadow-[var(--shadow-sm)]',
           // Padding
           paddingStyles[padding],
           // Hoverable state
           hoverable && [
             'transition-all duration-[var(--duration-fast)] ease-[var(--ease-smooth)]',
-            'hover:border hover:border-brand-light',
+            'active:bg-input-bg',
             'cursor-pointer',
           ],
           className
