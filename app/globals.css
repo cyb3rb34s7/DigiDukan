@@ -120,11 +120,12 @@
 }
 
 /* Hero gradient - Mesh effect with chartreuse glow */
+/* Light mode - More visible gradient */
 .hero-gradient {
   background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(144, 211, 31, 0.12), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(144, 211, 31, 0.08), transparent),
-    radial-gradient(ellipse 50% 50% at 50% 90%, rgba(107, 163, 19, 0.06), transparent),
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(144, 211, 31, 0.25), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(144, 211, 31, 0.18), transparent),
+    radial-gradient(ellipse 50% 50% at 50% 90%, rgba(107, 163, 19, 0.12), transparent),
     linear-gradient(180deg, var(--color-surface) 0%, var(--color-canvas) 100%);
 }
 
@@ -138,16 +139,49 @@
 }
 
 /* Glass card effect */
+/* Light mode - White glass with chartreuse accent */
 .glass-card {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(144, 211, 31, 0.25);
+  box-shadow: 0 4px 16px rgba(144, 211, 31, 0.1);
 }
 
+/* Dark mode - Frosted glass effect */
 [data-theme="dark"] .glass-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Section gradient - Subtle top gradient for list sections */
+.section-gradient {
+  position: relative;
+}
+
+.section-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    rgba(144, 211, 31, 0.06) 0%,
+    transparent 100%
+  );
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .section-gradient::before {
+  background: linear-gradient(
+    180deg,
+    rgba(144, 211, 31, 0.1) 0%,
+    transparent 100%
+  );
 }
 
 /* ========================================

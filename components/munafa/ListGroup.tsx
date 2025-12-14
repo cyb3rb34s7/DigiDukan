@@ -36,8 +36,8 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
           </h3>
         )}
 
-        {/* Group container */}
-        <div className="bg-surface rounded-[var(--radius-md)] shadow-[var(--shadow-sm)] overflow-hidden">
+        {/* Group container with subtle gradient */}
+        <div className="section-gradient bg-surface rounded-[var(--radius-md)] shadow-[var(--shadow-sm)] overflow-hidden border border-brand-primary/5">
           {Children.map(childArray, (child, index) => {
             if (isValidElement(child)) {
               return cloneElement(child as React.ReactElement<ListItemProps>, {

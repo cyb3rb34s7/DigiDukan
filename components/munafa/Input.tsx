@@ -35,7 +35,8 @@ const variantStyles = {
   search: [
     'h-14 px-5 text-[17px]',
     'rounded-[var(--radius-lg)]',
-    'shadow-[0_2px_8px_rgba(144,211,31,0.08)]',
+    'shadow-[0_2px_12px_rgba(144,211,31,0.12)]',
+    'border-brand-primary/20',  // Subtle brand border
   ].join(' '),
 };
 
