@@ -124,12 +124,12 @@ export default function EditProductPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <Button
-          variant="ghost"
+          variant="secondary"
           size="sm"
           onClick={() => router.back()}
-          className="gap-1"
+          icon={<Icon name="close" size="sm" filled />}
+          className="shadow-[var(--shadow-sm)]"
         >
-          <Icon name="close" size="sm" />
           {t('edit.button.cancel')}
         </Button>
         <h1 className="text-lg font-semibold text-text-primary">{t('edit.title')}</h1>

@@ -170,28 +170,32 @@ export default function ProductDetailPage() {
       : 'text-danger-text bg-danger-bg';
 
   return (
-    <div className="p-4 space-y-4 pb-24">
+    <div className="p-4 space-y-4 pb-24 hero-gradient min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between">
         <Button
-          variant="ghost"
+          variant="secondary"
           size="sm"
           onClick={() => router.back()}
-          className="gap-1"
+          icon={<Icon name="arrow-back" size="sm" filled />}
+          className="shadow-[var(--shadow-sm)]"
         >
-          <Icon name="arrow-back" size="sm" />
           {t('detail.button.back')}
         </Button>
         <Link href={`/product/${productId}/edit`}>
-          <Button variant="secondary" size="sm" className="gap-1">
-            <Icon name="edit" size="sm" />
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Icon name="edit" size="sm" filled />}
+            className="shadow-[var(--shadow-sm)]"
+          >
             {t('detail.button.edit')}
           </Button>
         </Link>
       </div>
 
       {/* Product Info Card */}
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden glass-card">
         <div className="p-4 space-y-4">
           {/* Name & Size */}
           <div>
@@ -216,7 +220,7 @@ export default function ProductDetailPage() {
               </p>
             </div>
             {/* Sell Price */}
-            <div className="p-3 bg-brand-primary/10 rounded-[var(--radius-md)] border border-brand-primary/20">
+            <div className="p-3 glass rounded-[var(--radius-md)] border border-brand-primary/30 bg-brand-primary/15">
               <p className="text-xs text-text-secondary mb-1">{t('detail.label.sellPrice')}</p>
               <p className="text-2xl font-bold text-brand-dark tabular-nums">
                 {formatCurrency(product.sellingPrice)}
