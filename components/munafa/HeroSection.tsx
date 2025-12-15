@@ -43,7 +43,7 @@ function GlassStat({ icon, value, label, variant = 'default' }: GlassStatProps) 
       className={cn(
         'glass-card',
         'flex flex-col items-center justify-center',
-        'px-4 py-3 rounded-[var(--radius-md)]',
+        'px-4 py-3 rounded-md',
         'min-w-[100px] flex-1'
       )}
     >

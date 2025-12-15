@@ -107,7 +107,7 @@ export function InstallPrompt() {
       <div
         className={cn(
           'fixed bottom-20 left-4 right-4 z-50',
-          'p-4 rounded-[var(--radius-lg)]',
+          'p-4 rounded-lg',
           'bg-white dark:bg-gray-900',
           'border border-brand-primary/30',
           'shadow-xl',
@@ -116,7 +116,7 @@ export function InstallPrompt() {
       >
         <div className="flex items-start gap-3">
           {/* Icon */}
-          <div className="w-12 h-12 rounded-[var(--radius-md)] bg-brand-primary flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-md bg-brand-primary flex items-center justify-center shrink-0">
             <Icon name="install-mobile" size="lg" className="text-white" />
           </div>
 
@@ -161,7 +161,7 @@ export function InstallPrompt() {
     <div
       className={cn(
         'fixed bottom-20 left-4 right-4 z-50',
-        'p-4 rounded-[var(--radius-lg)]',
+        'p-4 rounded-lg',
         'bg-white dark:bg-gray-900',
         'border border-brand-primary/30',
         'shadow-xl',
@@ -170,7 +170,7 @@ export function InstallPrompt() {
     >
       <div className="flex items-start gap-3">
         {/* Icon */}
-        <div className="w-12 h-12 rounded-[var(--radius-md)] bg-brand-primary flex items-center justify-center shrink-0">
+        <div className="w-12 h-12 rounded-md bg-brand-primary flex items-center justify-center shrink-0">
           <Icon name="install-mobile" size="lg" className="text-white" />
         </div>
 

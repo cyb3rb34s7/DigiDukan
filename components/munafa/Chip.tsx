@@ -41,7 +41,7 @@ export function Chip({ options, value, onChange, className }: ChipProps) {
               'transition-all duration-[var(--duration-fast)] ease-[var(--ease-spring)]',
               // Selected state - dark text on chartreuse
               isSelected
-                ? 'bg-brand-primary text-[#0D0D0D] font-semibold shadow-[var(--shadow-xs)]'
+                ? 'bg-brand-primary text-[#0D0D0D] font-semibold shadow-xs'
                 : 'bg-input-bg text-text-secondary hover:bg-input-bg-hover'
             )}
           >

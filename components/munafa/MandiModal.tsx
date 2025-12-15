@@ -134,7 +134,7 @@ export function MandiModal({
                     key={item.id}
                     className={cn(
                       'flex items-center justify-between',
-                      'px-3 py-2.5 rounded-[var(--radius-md)]',
+                      'px-3 py-2.5 rounded-md',
                       'bg-input-bg'
                     )}
                   >

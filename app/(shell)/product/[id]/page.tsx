@@ -53,7 +53,7 @@ function StatusButton({ status, label, isActive, onClick, disabled }: StatusButt
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'flex-1 py-3 px-4 rounded-[var(--radius-md)]',
+        'flex-1 py-3 px-4 rounded-md',
         'font-semibold text-sm',
         'border',
         'transition-all duration-[var(--duration-fast)]',
@@ -130,12 +130,12 @@ export default function ProductDetailPage() {
       <div className="p-4 space-y-4">
         {/* Header skeleton */}
         <div className="flex items-center justify-between">
-          <div className="h-10 w-20 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
-          <div className="h-10 w-16 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
+          <div className="h-10 w-20 bg-input-bg rounded-md animate-pulse" />
+          <div className="h-10 w-16 bg-input-bg rounded-md animate-pulse" />
         </div>
         {/* Card skeletons */}
-        <div className="h-48 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
-        <div className="h-32 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
+        <div className="h-48 bg-input-bg rounded-lg animate-pulse" />
+        <div className="h-32 bg-input-bg rounded-lg animate-pulse" />
       </div>
     );
   }
@@ -180,7 +180,7 @@ export default function ProductDetailPage() {
           size="sm"
           onClick={() => router.back()}
           icon={<Icon name="arrow-back" size="sm" filled />}
-          className="shadow-[var(--shadow-sm)]"
+          className="shadow-sm"
         >
           {t('detail.button.back')}
         </Button>
@@ -189,7 +189,7 @@ export default function ProductDetailPage() {
             variant="secondary"
             size="sm"
             icon={<Icon name="edit" size="sm" filled />}
-            className="shadow-[var(--shadow-sm)]"
+            className="shadow-sm"
           >
             {t('detail.button.edit')}
           </Button>
@@ -215,14 +215,14 @@ export default function ProductDetailPage() {
           {/* Pricing Grid */}
           <div className="grid grid-cols-2 gap-3">
             {/* Buy Price */}
-            <div className="p-3 bg-input-bg rounded-[var(--radius-md)]">
+            <div className="p-3 bg-input-bg rounded-md">
               <p className="text-xs text-text-secondary mb-1">{t('detail.label.buyPrice')}</p>
               <p className="text-xl font-semibold text-text-primary tabular-nums">
                 {formatCurrency(product.buyingPrice)}
               </p>
             </div>
             {/* Sell Price */}
-            <div className="p-3 glass rounded-[var(--radius-md)] border border-brand-primary/30 bg-brand-primary/15">
+            <div className="p-3 glass rounded-md border border-brand-primary/30 bg-brand-primary/15">
               <p className="text-xs text-text-secondary mb-1">{t('detail.label.sellPrice')}</p>
               <p className="text-2xl font-bold text-brand-dark tabular-nums">
                 {formatCurrency(product.sellingPrice)}
@@ -231,7 +231,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Margin */}
-          <div className={cn('p-3 rounded-[var(--radius-md)]', marginColor)}>
+          <div className={cn('p-3 rounded-md', marginColor)}>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{t('detail.label.margin')}</span>
               <span className="text-lg font-bold tabular-nums">

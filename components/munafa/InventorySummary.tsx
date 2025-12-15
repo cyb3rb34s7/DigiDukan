@@ -76,7 +76,7 @@ export function InventorySummary({
           onClick={onOpenMandi}
           className={cn(
             'flex items-center justify-between w-full',
-            'px-4 py-2.5 rounded-[var(--radius-md)]',
+            'px-4 py-2.5 rounded-md',
             'bg-warning-bg/50 border border-warning-bar/30',
             'transition-all duration-[var(--duration-fast)]',
             'active:scale-[0.98]'

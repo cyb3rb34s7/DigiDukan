@@ -60,7 +60,7 @@ export default function SettingsPage() {
                 key={lang}
                 onClick={() => handleLanguageChange(lang)}
                 className={cn(
-                  'p-3 rounded-[var(--radius-md)] border-2 transition-all',
+                  'p-3 rounded-md border-2 transition-all',
                   'font-semibold text-sm',
                   language === lang
                     ? 'border-brand-primary bg-brand-primary/15 text-brand-primary'
@@ -109,7 +109,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Current margin display */}
-          <div className="p-3 rounded-[var(--radius-md)] bg-success-bg">
+          <div className="p-3 rounded-md bg-success-bg">
             <div className="flex items-center justify-between text-success-text">
               <span className="text-sm font-medium">
                 {t('settings.margin.example').replace('{price}', examplePrice)}
@@ -144,7 +144,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Tagline */}
-          <div className="p-3 rounded-[var(--radius-md)] bg-brand-primary/10 border border-brand-primary/20">
+          <div className="p-3 rounded-md bg-brand-primary/10 border border-brand-primary/20">
             <p className="text-sm text-brand-primary text-center font-medium">
               Designed to help small businesses grow profits
             </p>

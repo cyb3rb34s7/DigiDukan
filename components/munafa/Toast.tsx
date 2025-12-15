@@ -85,7 +85,7 @@ function ToastItem({
         // Base styles
         'flex items-center gap-3 px-4 py-3',
         'rounded-2xl',
-        'shadow-[var(--shadow-md)]',
+        'shadow-md',
         'backdrop-blur-md',
         // Animation
         'animate-slide-down',

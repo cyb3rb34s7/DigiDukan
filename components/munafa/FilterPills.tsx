@@ -55,7 +55,7 @@ export function FilterPills({ options, value, onChange, className }: FilterPills
               'active:scale-95',
               // Selected state
               isSelected
-                ? 'bg-brand-primary text-[#0D0D0D] font-semibold shadow-[var(--shadow-xs)]'
+                ? 'bg-brand-primary text-[#0D0D0D] font-semibold shadow-xs'
                 : 'bg-input-bg text-text-secondary hover:bg-input-bg-hover'
             )}
           >

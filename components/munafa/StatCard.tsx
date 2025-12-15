@@ -64,8 +64,8 @@ export const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
         className={cn(
           // Base
           styles.bg,
-          'rounded-[var(--radius-md)]',
-          'shadow-[var(--shadow-sm)]',
+          'rounded-md',
+          'shadow-sm',
           'p-4',
           // Layout
           'flex flex-col items-center justify-center',

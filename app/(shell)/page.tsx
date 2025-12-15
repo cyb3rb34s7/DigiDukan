@@ -142,7 +142,7 @@ export default function HomePage() {
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="h-[60px] bg-surface animate-pulse rounded-[var(--radius-md)]"
+              className="h-[60px] bg-surface animate-pulse rounded-md"
             />
           ))}
         </div>

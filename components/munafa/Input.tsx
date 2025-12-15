@@ -34,7 +34,7 @@ const variantStyles = {
   ].join(' '),
   search: [
     'h-14 px-5 text-[17px]',
-    'rounded-[var(--radius-lg)]',
+    'rounded-lg',
     'shadow-[0_2px_12px_rgba(144,211,31,0.12)]',
     'border-brand-primary/20',  // Subtle brand border
   ].join(' '),
@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               // Focus shadow - stronger glow for search
               variant === 'search'
                 ? 'focus:shadow-[0_4px_16px_rgba(144,211,31,0.2)]'
-                : 'focus:shadow-[var(--shadow-md)]',
+                : 'focus:shadow-md',
               // Variant styles
               variantStyles[variant],
               // Icon padding

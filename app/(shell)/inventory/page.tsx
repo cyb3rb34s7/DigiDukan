@@ -233,7 +233,7 @@ export default function InventoryPage() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="h-20 bg-input-bg rounded-[var(--radius-md)] animate-pulse"
+                className="h-20 bg-input-bg rounded-md animate-pulse"
               />
             ))}
           </div>
@@ -246,7 +246,7 @@ export default function InventoryPage() {
             <h3 className="text-lg font-semibold text-text-primary mb-1">
               {searchQuery ? t('home.empty') : t('inventory.empty.title')}
             </h3>
-            <p className="text-sm text-text-secondary max-w-[240px]">
+            <p className="text-sm text-text-secondary max-w-60">
               {searchQuery
                 ? t('inventory.empty.filtered').replace('{status}', searchQuery)
                 : activeFilter !== 'ALL'
@@ -256,7 +256,7 @@ export default function InventoryPage() {
           </div>
         ) : (
           // Flat product list
-          <div className="bg-surface mx-4 mt-2 rounded-[var(--radius-md)] shadow-[var(--shadow-sm)] overflow-hidden border border-brand-primary/10">
+          <div className="bg-surface mx-4 mt-2 rounded-md shadow-sm overflow-hidden border border-brand-primary/10">
             {filteredProducts.map((product, index) => (
               <InventoryItem
                 key={product.id}

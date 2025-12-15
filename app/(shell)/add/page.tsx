@@ -230,7 +230,7 @@ export default function AddProductPage() {
                 <label className="text-sm font-medium text-text-primary">
                   {t('add.form.sellPrice')}
                 </label>
-                <div className="glass rounded-[var(--radius-md)] border border-brand-primary/30 bg-brand-primary/15 p-px">
+                <div className="glass rounded-md border border-brand-primary/30 bg-brand-primary/15 p-px">
                   <Input
                     type="number"
                     inputMode="decimal"
@@ -249,7 +249,7 @@ export default function AddProductPage() {
             {formData.buyingPrice && formData.sellingPrice && (
               <div
                 className={cn(
-                  'p-3 rounded-[var(--radius-md)]',
+                  'p-3 rounded-md',
                   margin >= 20
                     ? 'bg-success-bg text-success-text'
                     : margin >= 10

@@ -109,13 +109,13 @@ export default function EditProductPage() {
       <div className="p-4 space-y-4">
         {/* Header skeleton */}
         <div className="flex items-center justify-between">
-          <div className="h-10 w-20 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
-          <div className="h-6 w-32 bg-input-bg rounded-[var(--radius-md)] animate-pulse" />
+          <div className="h-10 w-20 bg-input-bg rounded-md animate-pulse" />
+          <div className="h-6 w-32 bg-input-bg rounded-md animate-pulse" />
           <div className="w-20" />
         </div>
         {/* Form skeleton */}
-        <div className="h-64 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
-        <div className="h-48 bg-input-bg rounded-[var(--radius-lg)] animate-pulse" />
+        <div className="h-64 bg-input-bg rounded-lg animate-pulse" />
+        <div className="h-48 bg-input-bg rounded-lg animate-pulse" />
       </div>
     );
   }
@@ -129,7 +129,7 @@ export default function EditProductPage() {
           size="sm"
           onClick={() => router.back()}
           icon={<Icon name="close" size="sm" filled />}
-          className="shadow-[var(--shadow-sm)]"
+          className="shadow-sm"
         >
           {t('edit.button.cancel')}
         </Button>
@@ -213,7 +213,7 @@ export default function EditProductPage() {
             {formData.buyingPrice && formData.sellingPrice && (
               <div
                 className={cn(
-                  'p-3 rounded-[var(--radius-md)]',
+                  'p-3 rounded-md',
                   margin >= 20
                     ? 'bg-success-bg text-success-text'
                     : margin >= 10
