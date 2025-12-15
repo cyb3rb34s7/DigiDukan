@@ -6,7 +6,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import Fuse from 'fuse.js';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/components/munafa/Icon';
 import { Input } from '@/components/munafa/Input';
@@ -15,6 +14,7 @@ import ListGroup, { ListItem } from '@/components/munafa/ListGroup';
 import { searchProducts } from '../actions/products';
 import { formatCurrency, formatSize } from '@/lib/utils/formatters';
 import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
+import { matchesProduct } from '@/lib/utils/search';
 
 type Product = {
   id: string;
@@ -63,33 +63,22 @@ export default function HomePage() {
     loadProducts();
   }, []);
 
-  // Initialize Fuse.js
-  const fuse = useMemo(() => {
-    if (products.length === 0) return null;
-
-    return new Fuse(products, {
-      keys: [
-        { name: 'name', weight: 2 },
-        { name: 'aliases', weight: 1.5 },
-      ],
-      threshold: 0.4,
-      includeScore: true,
-      minMatchCharLength: 2,
-    });
-  }, [products]);
-
-  // Fuse.js search
+  // Search with Hindi-English semantic matching
   useEffect(() => {
     if (!searchQuery.trim()) {
       setFilteredProducts(products.slice(0, 15));
       return;
     }
 
-    if (!fuse) return;
-
-    const results = fuse.search(searchQuery);
-    setFilteredProducts(results.map(r => r.item).slice(0, 15));
-  }, [searchQuery, products, fuse]);
+    // Use matchesProduct which handles semantic search correctly
+    const results = products.filter((p) =>
+      matchesProduct(searchQuery, {
+        name: p.name,
+        aliases: p.aliases,
+      })
+    );
+    setFilteredProducts(results.slice(0, 15));
+  }, [searchQuery, products]);
 
   // Add to recently checked
   const handleProductClick = (productId: string) => {

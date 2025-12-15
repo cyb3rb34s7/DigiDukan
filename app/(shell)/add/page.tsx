@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/contexts/LanguageContext';
 import { Card, Button, Input, Icon, Chip } from '@/components/munafa';
@@ -13,6 +13,7 @@ import { useToast } from '@/components/munafa/Toast';
 import { addProduct } from '@/app/actions/products';
 import { UNITS } from '@/lib/utils/constants';
 import { calculateSellingPrice, calculateMargin } from '@/lib/utils/formatters';
+import { getSuggestedAliases } from '@/lib/utils/search';
 import { cn } from '@/lib/utils/cn';
 
 export default function AddProductPage() {
@@ -29,6 +30,32 @@ export default function AddProductPage() {
     sellingPrice: '',
     defaultMargin: 10,
   });
+
+  // Track what user has manually unselected
+  const [unselectedAliases, setUnselectedAliases] = useState<Set<string>>(new Set());
+
+  // Get suggested aliases based on product name
+  const suggestedAliases = useMemo(() => {
+    return getSuggestedAliases(formData.name);
+  }, [formData.name]);
+
+  // Active aliases = suggestions minus what user unselected
+  const activeAliases = useMemo(() => {
+    return suggestedAliases.filter((a) => !unselectedAliases.has(a));
+  }, [suggestedAliases, unselectedAliases]);
+
+  // Toggle adds/removes from unselected set
+  const toggleAlias = (alias: string) => {
+    setUnselectedAliases((prev) => {
+      const next = new Set(prev);
+      if (next.has(alias)) {
+        next.delete(alias);
+      } else {
+        next.add(alias);
+      }
+      return next;
+    });
+  };
 
   // Auto-calculate selling price when buying price changes
   const handleBuyingPriceChange = (value: string) => {
@@ -65,7 +92,7 @@ export default function AddProductPage() {
         buyingPrice: Number(formData.buyingPrice),
         sellingPrice: Number(formData.sellingPrice),
         stockStatus: 'OK',
-        aliases: [],
+        aliases: activeAliases,
       });
 
       if (result.success) {
@@ -110,6 +137,36 @@ export default function AddProductPage() {
               required
               autoFocus
             />
+
+            {/* Alias Suggestions - Pre-selected, tap to remove */}
+            {suggestedAliases.length > 0 && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-text-secondary">
+                  Search Keywords (tap to remove)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedAliases.map((alias) => (
+                    <button
+                      key={alias}
+                      type="button"
+                      onClick={() => toggleAlias(alias)}
+                      className={cn(
+                        'px-3 py-1.5 rounded-full text-sm font-medium transition-all',
+                        'border',
+                        activeAliases.includes(alias)
+                          ? 'bg-brand-primary text-white border-brand-primary'
+                          : 'bg-input-bg text-text-secondary border-border-subtle hover:border-brand-primary/50'
+                      )}
+                    >
+                      {alias}
+                      {activeAliases.includes(alias) && (
+                        <Icon name="check" size="sm" className="ml-1 inline" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <Input
               label={t('add.form.barcode')}
