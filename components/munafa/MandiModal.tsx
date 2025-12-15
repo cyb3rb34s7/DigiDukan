@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { Icon } from './Icon';
 import { Button } from './Button';
@@ -40,6 +40,35 @@ export function MandiModal({
   totalCost,
 }: MandiModalProps) {
   const { t } = useTranslation();
+
+  // Swipe-down-to-dismiss state
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startY = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startY.current = e.touches[0].clientY;
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+    const currentY = e.touches[0].clientY;
+    const diff = currentY - startY.current;
+    // Only allow dragging down (positive diff)
+    if (diff > 0) {
+      setDragY(diff);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    // Close if dragged past threshold (100px)
+    if (dragY > 100) {
+      onClose();
+    }
+    setDragY(0);
+  };
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -85,12 +114,19 @@ export function MandiModal({
           'bg-surface rounded-t-[24px]',
           'shadow-[0_-4px_32px_rgba(0,0,0,0.15)]',
           'max-h-[80vh] flex flex-col',
-          'animate-slide-up',
-          'pb-[env(safe-area-inset-bottom,0px)]'
+          !isDragging && 'animate-slide-up',
+          'pb-[env(safe-area-inset-bottom,0px)]',
+          isDragging ? 'transition-none' : 'transition-transform duration-200'
         )}
+        style={{ transform: `translateY(${dragY}px)` }}
       >
-        {/* Handle */}
-        <div className="flex justify-center pt-3 pb-2">
+        {/* Handle - draggable area */}
+        <div
+          className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing touch-none"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="w-10 h-1 rounded-full bg-border-subtle" />
         </div>
 
