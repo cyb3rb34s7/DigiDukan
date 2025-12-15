@@ -46,3 +46,7 @@ export {
 export { InventoryItem, type InventoryItemProps } from './InventoryItem';
 export { FilterPills, type FilterPillsProps, type FilterOption } from './FilterPills';
 export { MandiModal, type MandiModalProps } from './MandiModal';
+
+// PWA Components
+export { InstallPrompt } from './InstallPrompt';
+export { ServiceWorkerRegistration } from './ServiceWorkerRegistration';

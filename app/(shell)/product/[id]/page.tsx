@@ -241,7 +241,7 @@ export default function ProductDetailPage() {
       </Card>
 
       {/* Stock Status Card */}
-      <Card>
+      <Card className="glass-card">
         <div className="p-4 space-y-4">
           <h2 className="text-lg font-semibold text-text-primary">
             {t('detail.stock.title')}
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
 
       {/* Aliases/Search Keywords */}
       {product.aliases && product.aliases.length > 0 && (
-        <Card>
+        <Card className="glass-card">
           <div className="p-4 space-y-3">
             <h3 className="text-sm font-semibold text-text-primary">
               {t('detail.label.aliases')}

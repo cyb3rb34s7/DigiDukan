@@ -39,7 +39,8 @@ export const ListGroup = forwardRef<HTMLDivElement, ListGroupProps>(
         {/* Group container with subtle gradient */}
         <div className="section-gradient bg-surface rounded-[var(--radius-md)] shadow-[var(--shadow-sm)] overflow-hidden border border-brand-primary/5">
           {Children.map(childArray, (child, index) => {
-            if (isValidElement(child)) {
+            // Only add isLast prop to ListItem components, not other elements
+            if (isValidElement(child) && child.type === ListItem) {
               return cloneElement(child as React.ReactElement<ListItemProps>, {
                 isLast: index === childCount - 1,
               });

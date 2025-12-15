@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#4F46E5",
+  themeColor: "#ffffff",
 };
 
 export const metadata: Metadata = {
@@ -47,7 +47,9 @@ export default function RootLayout({
     <html lang="hi" className={`${manrope.variable} ${notoDevanagari.variable}`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#4F46E5" />
+        <link rel="icon" href="/icons/icon-192x192.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.svg" />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Munafa" />
