@@ -9,6 +9,7 @@ export function useOnline() {
 
   useEffect(() => {
     // Set initial state
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: syncing with browser API on mount
     setIsOnline(navigator.onLine);
 
     const handleOnline = () => setIsOnline(true);

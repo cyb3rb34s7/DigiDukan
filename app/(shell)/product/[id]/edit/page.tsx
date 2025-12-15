@@ -12,7 +12,7 @@ import { Card, Button, Input, Icon, Chip } from '@/components/munafa';
 import { useToast } from '@/components/munafa/Toast';
 import { getProductById, updateProduct } from '@/app/actions/products';
 import { UNITS } from '@/lib/utils/constants';
-import { calculateSellingPrice, calculateMargin } from '@/lib/utils/formatters';
+import { calculateMargin } from '@/lib/utils/formatters';
 import { cn } from '@/lib/utils/cn';
 
 export default function EditProductPage() {
@@ -37,6 +37,7 @@ export default function EditProductPage() {
 
   useEffect(() => {
     loadProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadProduct uses productId which is in deps
   }, [productId]);
 
   async function loadProduct() {

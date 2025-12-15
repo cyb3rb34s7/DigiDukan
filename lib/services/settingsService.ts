@@ -40,7 +40,7 @@ export class SettingsService {
     // Ensure settings exist
     await this.getSettings()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (data.defaultMargin !== undefined) {
       updateData.defaultMargin = new Decimal(data.defaultMargin)
     }

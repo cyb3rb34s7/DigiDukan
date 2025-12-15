@@ -29,7 +29,8 @@ const paddingStyles = {
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
     {
-      variant = 'default',
+      // variant prop reserved for future use
+      variant: _variant,
       padding = 'md',
       hoverable = false,
       className,
@@ -38,6 +39,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
+    void _variant; // Suppress unused variable warning - reserved for future variant styling
     return (
       <div
         ref={ref}

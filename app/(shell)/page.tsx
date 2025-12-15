@@ -41,7 +41,7 @@ export default function HomePage() {
       try {
         const result = await searchProducts();
         if (result.success && result.data) {
-          const mapped = result.data.map((p: any) => ({
+          const mapped = result.data.map((p: Record<string, unknown>) => ({
             id: p.id,
             name: p.name,
             aliases: p.aliases || [],

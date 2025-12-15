@@ -175,7 +175,7 @@ export class ProductService {
     await this.getProductById(id)
 
     // Convert numeric fields to Decimal
-    const updateData: any = { ...data }
+    const updateData: Record<string, unknown> = { ...data }
     if (data.sizeValue !== undefined) {
       updateData.sizeValue = new Decimal(data.sizeValue)
     }

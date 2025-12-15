@@ -3,7 +3,7 @@
  * Standardized error responses and logging
  */
 
-import { ZodError } from 'zod'
+import { ZodError, ZodIssue } from 'zod'
 import { Prisma } from '@prisma/client'
 import { ApiResponse } from '../types'
 
@@ -52,7 +52,7 @@ export function handleError(error: unknown): ApiResponse<never> {
 
   // Zod Validation Errors
   if (error instanceof ZodError) {
-    const messages = error.issues.map((err: any) => `${err.path.join('.')}: ${err.message}`)
+    const messages = error.issues.map((err: ZodIssue) => `${err.path.join('.')}: ${err.message}`)
     return {
       success: false,
       error: 'VALIDATION_ERROR',

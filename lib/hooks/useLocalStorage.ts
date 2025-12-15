@@ -11,6 +11,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
   // Check if we're on client side
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern for SSR
     setIsClient(true);
   }, []);
 
@@ -21,6 +22,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     try {
       const item = window.localStorage.getItem(key);
       if (item) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern for SSR
         setStoredValue(JSON.parse(item));
       }
     } catch (error) {

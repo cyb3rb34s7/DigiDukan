@@ -22,7 +22,7 @@ export function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 safe-bottom">
       <div className="grid grid-cols-4 h-nav-height">
-        {navItems.map(({ href, icon: Icon, label, labelEn }) => {
+        {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
           
           return (

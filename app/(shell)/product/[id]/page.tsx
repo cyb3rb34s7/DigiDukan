@@ -16,6 +16,7 @@ import { updateStockStatus } from '@/app/actions/stock';
 import { formatCurrency, formatSize, calculateMargin } from '@/lib/utils/formatters';
 import { cn } from '@/lib/utils/cn';
 import type { StockStatus } from '@/components/munafa/HealthBar';
+import type { ProductWithStock } from '@/lib/types';
 
 interface StatusButtonProps {
   status: StockStatus;
@@ -74,7 +75,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<ProductWithStock | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
@@ -82,6 +83,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     loadProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- loadProduct uses productId which is in deps
   }, [productId]);
 
   async function loadProduct() {
@@ -107,10 +109,10 @@ export default function ProductDetailPage() {
 
       if (result.success) {
         // Optimistic update
-        setProduct((prev: any) => ({
+        setProduct((prev) => prev ? ({
           ...prev,
-          stock: { ...prev.stock, status },
-        }));
+          stock: prev.stock ? { ...prev.stock, status } : { id: '', productId, status, lastChecked: new Date() },
+        }) : null);
         toast.success(t('detail.success.stock'));
       } else {
         toast.error(result.error || t('detail.error.stock'));

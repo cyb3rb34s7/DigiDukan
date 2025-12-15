@@ -41,6 +41,7 @@ export function ThemeProvider({
 
   // Load theme from localStorage on mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern for SSR
     setMounted(true);
 
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme | null;

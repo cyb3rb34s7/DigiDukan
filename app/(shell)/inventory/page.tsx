@@ -11,7 +11,6 @@ import { Icon, Input } from '@/components/munafa';
 import { InventorySummary, type StockFilter } from '@/components/munafa/InventorySummary';
 import { InventoryItem } from '@/components/munafa/InventoryItem';
 import { MandiModal } from '@/components/munafa/MandiModal';
-import { cn } from '@/lib/utils/cn';
 import { matchesProduct } from '@/lib/utils/search';
 import { getAllProducts } from '@/app/actions/products';
 import { updateStockStatus } from '@/app/actions/stock';
@@ -50,6 +49,7 @@ export default function InventoryPage() {
         .filter((p) => p.stock?.status === 'LOW' || p.stock?.status === 'EMPTY')
         .map((p) => p.id);
       if (autoAdd.length > 0) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional one-time initialization
         setMandiList(new Set(autoAdd));
       }
     }

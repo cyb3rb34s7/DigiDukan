@@ -3,8 +3,6 @@
  * Simple toast notification system
  */
 
-import { create } from 'zustand';
-
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 export interface Toast {
@@ -12,12 +10,6 @@ export interface Toast {
   message: string;
   type: ToastType;
   duration?: number;
-}
-
-interface ToastStore {
-  toasts: Toast[];
-  addToast: (message: string, type?: ToastType, duration?: number) => void;
-  removeToast: (id: string) => void;
 }
 
 // Simple state without zustand for now
@@ -39,9 +31,11 @@ export function useToast() {
   }, []);
 
   const addToast = (message: string, type: ToastType = 'info', duration = 2000) => {
+    // eslint-disable-next-line react-hooks/purity -- Math.random is safe in event handler
     const id = Math.random().toString(36).substr(2, 9);
     const newToast: Toast = { id, message, type, duration };
-    
+
+    // eslint-disable-next-line react-hooks/globals -- Intentional global state for simple pub/sub pattern
     toasts = [...toasts, newToast];
     toastListeners.forEach(listener => listener(toasts));
 
@@ -78,9 +72,10 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<Toast[]>([]);
 
   const addToast = (message: string, type: ToastType = 'info', duration = 2000) => {
+    // eslint-disable-next-line react-hooks/purity -- Math.random is safe in event handler
     const id = Math.random().toString(36).substr(2, 9);
     const newToast: Toast = { id, message, type, duration };
-    
+
     setToasts(prev => [...prev, newToast]);
 
     if (duration > 0) {

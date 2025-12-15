@@ -22,8 +22,6 @@ import hinglish from '@/locales/hinglish.json';
 
 export type Language = 'en' | 'hi' | 'hinglish';
 
-type TranslationKey = keyof typeof en;
-
 interface LanguageContextValue {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -66,6 +64,7 @@ export function LanguageProvider({
 
   // Load language from localStorage on mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional hydration pattern for SSR
     setMounted(true);
 
     const storedLang = localStorage.getItem(STORAGE_KEY) as Language | null;

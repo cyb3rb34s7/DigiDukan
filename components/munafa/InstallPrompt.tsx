@@ -27,12 +27,13 @@ export function InstallPrompt() {
   useEffect(() => {
     // Check if already installed (standalone mode)
     if (window.matchMedia('(display-mode: standalone)').matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional initialization check
       setIsInstalled(true);
       return;
     }
 
     // Also check for iOS standalone
-    if ((navigator as any).standalone === true) {
+    if ((navigator as unknown as { standalone?: boolean }).standalone === true) {
       setIsInstalled(true);
       return;
     }
@@ -44,7 +45,7 @@ export function InstallPrompt() {
     }
 
     // Detect iOS
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown as { MSStream?: unknown }).MSStream;
     setIsIOS(isIOSDevice);
 
     // For iOS, show the prompt after a short delay
