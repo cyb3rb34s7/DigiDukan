@@ -8,25 +8,23 @@
 import { cn } from '@/lib/utils/cn';
 import { Icon } from './Icon';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageToggle } from './LanguageToggle';
 
 export interface AppBarProps {
   /** App title */
   title?: string;
-  /** Show profile button */
-  showProfile?: boolean;
   /** Show theme toggle */
   showThemeToggle?: boolean;
-  /** Profile click handler */
-  onProfileClick?: () => void;
+  /** Show language toggle */
+  showLanguageToggle?: boolean;
   /** Additional CSS classes */
   className?: string;
 }
 
 export function AppBar({
   title = 'मेरी दुकान',
-  showProfile = true,
   showThemeToggle = true,
-  onProfileClick,
+  showLanguageToggle = true,
   className,
 }: AppBarProps) {
   return (
@@ -69,23 +67,8 @@ export function AppBar({
         {/* Theme Toggle */}
         {showThemeToggle && <ThemeToggle size="sm" />}
 
-        {/* Profile Button */}
-        {showProfile && (
-          <button
-            onClick={onProfileClick}
-            className={cn(
-              'w-8 h-8 rounded-full',
-              'bg-input-bg hover:bg-input-bg-hover',
-              'flex items-center justify-center',
-              'transition-all duration-200',
-              'focus:outline-none focus:ring-2 focus:ring-brand-primary/50',
-              'active:scale-95'
-            )}
-            aria-label="Profile"
-          >
-            <Icon name="person" size="sm" className="text-text-secondary" />
-          </button>
-        )}
+        {/* Language Toggle */}
+        {showLanguageToggle && <LanguageToggle size="sm" />}
       </div>
     </header>
   );

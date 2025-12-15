@@ -12,6 +12,7 @@ import { InventorySummary, type StockFilter } from '@/components/munafa/Inventor
 import { InventoryItem } from '@/components/munafa/InventoryItem';
 import { MandiModal } from '@/components/munafa/MandiModal';
 import { cn } from '@/lib/utils/cn';
+import { matchesProduct } from '@/lib/utils/search';
 import { getAllProducts } from '@/app/actions/products';
 import { updateStockStatus } from '@/app/actions/stock';
 import type { ProductWithStock } from '@/lib/types';
@@ -54,14 +55,14 @@ export default function InventoryPage() {
     }
   }, [products, mandiList.size]);
 
-  // Filter by search query
+  // Filter by search query (with Hindi-English semantic matching)
   const searchFiltered = useMemo(() => {
     if (!searchQuery.trim()) return products;
-    const query = searchQuery.toLowerCase();
-    return products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(query) ||
-        p.aliases?.some((a) => a.toLowerCase().includes(query))
+    return products.filter((p) =>
+      matchesProduct(searchQuery, {
+        name: p.name,
+        aliases: p.aliases || [],
+      })
     );
   }, [products, searchQuery]);
 

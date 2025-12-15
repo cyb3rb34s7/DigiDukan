@@ -31,6 +31,7 @@ export {
 
 // Theme Components
 export { ThemeToggle, type ThemeToggleProps } from './ThemeToggle';
+export { LanguageToggle, type LanguageToggleProps } from './LanguageToggle';
 
 // App Shell Components
 export { AppBar, type AppBarProps } from './AppBar';
